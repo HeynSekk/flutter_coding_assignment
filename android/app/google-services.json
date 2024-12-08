@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "340963958764",
+    "project_id": "savelives-test",
+    "storage_bucket": "savelives-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340963958764:android:2cbc7923557a9fc83caac9",
+        "android_client_info": {
+          "package_name": "com.heinsek.flutter_sample_app.flutter_sample_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "340963958764-oq5711v9j7s4n5t5o70kp7q3t32dkrnm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsjC8vQKqcrgVjXMjGQXgrK4_5GrZegVg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "340963958764-oq5711v9j7s4n5t5o70kp7q3t32dkrnm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340963958764:android:ffd94c9f1f89826b3caac9",
+        "android_client_info": {
+          "package_name": "com.heinsek.save_lives"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "340963958764-oq5711v9j7s4n5t5o70kp7q3t32dkrnm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsjC8vQKqcrgVjXMjGQXgrK4_5GrZegVg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "340963958764-oq5711v9j7s4n5t5o70kp7q3t32dkrnm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
