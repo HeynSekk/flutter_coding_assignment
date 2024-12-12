@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sample_app/features/login/login_cubit.dart';
-import 'package:flutter_sample_app/main.dart';
 import 'package:flutter_sample_app/presentation/widgets/my_text_field.dart';
 import 'package:go_router/go_router.dart';
 
@@ -12,7 +11,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: getIt<LoginCubit>(),
+      value: loginCubit,
       child: const LoginView(),
     );
   }
