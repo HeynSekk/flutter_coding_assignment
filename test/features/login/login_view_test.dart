@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sample_app/features/login/login_cubit.dart';
 import 'package:flutter_sample_app/features/login/login_view.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../helper/mock_go_router.dart';
@@ -16,19 +15,21 @@ void main() {
     late LoginCubit loginCubit;
 
     testWidgets('Render LoginView and provide cubit', (tester) async {
-      GetIt getIt = GetIt.instance;
+      // GetIt getIt = GetIt.instance;
       loginCubit = MockLoginCubit();
       when(() => loginCubit.state)
           .thenReturn(const LoginState(status: LoginStatus.initial));
       when(() => loginCubit.init()).thenAnswer((_) async {});
-      getIt.registerSingleton(loginCubit);
+      // getIt.registerSingleton(loginCubit);
 
-      await tester.pumpWidget(const MaterialApp(
-        home: LoginPage(),
+      await tester.pumpWidget(MaterialApp(
+        home: LoginPage(
+          loginCubit: loginCubit,
+        ),
       ));
 
       expect(find.byType(LoginView), findsOneWidget);
-      await getIt.reset();
+      // await getIt.reset();
     });
   });
   group('LoginView', () {

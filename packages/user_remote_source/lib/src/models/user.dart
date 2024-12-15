@@ -1,19 +1,20 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user.g.dart';
 
 @JsonSerializable()
-class User {
-  int? id;
-  String? name;
-  String? username;
-  String? email;
-  Address? address;
-  String? phone;
-  String? website;
-  Company? company;
+class User extends Equatable {
+  final int? id;
+  final String? name;
+  final String? username;
+  final String? email;
+  final Address? address;
+  final String? phone;
+  final String? website;
+  final Company? company;
 
-  User({
+  const User({
     this.id,
     this.name,
     this.username,
@@ -27,17 +28,29 @@ class User {
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
+
+  @override
+  List<Object> get props => [
+        id ?? '',
+        name ?? '',
+        username ?? '',
+        email ?? '',
+        address ?? '',
+        phone ?? '',
+        website ?? '',
+        company ?? ''
+      ];
 }
 
 @JsonSerializable()
-class Address {
-  String? street;
-  String? suite;
-  String? city;
-  String? zipcode;
-  Geo? geo;
+class Address extends Equatable {
+  final String? street;
+  final String? suite;
+  final String? city;
+  final String? zipcode;
+  final Geo? geo;
 
-  Address({
+  const Address({
     this.street,
     this.suite,
     this.city,
@@ -49,14 +62,23 @@ class Address {
       _$AddressFromJson(json);
 
   Map<String, dynamic> toJson() => _$AddressToJson(this);
+
+  @override
+  List<Object> get props => [
+        street ?? '',
+        suite ?? '',
+        city ?? '',
+        zipcode ?? '',
+        geo ?? '',
+      ];
 }
 
 @JsonSerializable()
-class Geo {
-  String? lat;
-  String? lng;
+class Geo extends Equatable {
+  final String? lat;
+  final String? lng;
 
-  Geo({
+  const Geo({
     this.lat,
     this.lng,
   });
@@ -64,15 +86,18 @@ class Geo {
   factory Geo.fromJson(Map<String, dynamic> json) => _$GeoFromJson(json);
 
   Map<String, dynamic> toJson() => _$GeoToJson(this);
+
+  @override
+  List<Object> get props => [lat ?? '', lng ?? ''];
 }
 
 @JsonSerializable()
-class Company {
-  String? name;
-  String? catchPhrase;
-  String? bs;
+class Company extends Equatable {
+  final String? name;
+  final String? catchPhrase;
+  final String? bs;
 
-  Company({
+  const Company({
     this.name,
     this.catchPhrase,
     this.bs,
@@ -82,4 +107,7 @@ class Company {
       _$CompanyFromJson(json);
 
   Map<String, dynamic> toJson() => _$CompanyToJson(this);
+
+  @override
+  List<Object> get props => [name ?? '', catchPhrase ?? '', bs ?? ''];
 }

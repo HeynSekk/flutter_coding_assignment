@@ -6,7 +6,6 @@ import 'package:flutter_sample_app/features/add_post/add_post_cubit.dart';
 import 'package:flutter_sample_app/features/add_post/add_post_view.dart';
 import 'package:flutter_sample_app/features/users_list/user_list_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:user_repository/user_repository.dart';
 
@@ -23,8 +22,6 @@ class MockUserListCubit extends MockCubit<UserListState>
 class FakePost extends Fake implements Post {}
 
 void main() {
-  GetIt getIt = GetIt.instance;
-
   group('AddPostView', () {
     late AddPostCubit addPostCubit;
 
@@ -34,10 +31,6 @@ void main() {
 
     setUp(() {
       addPostCubit = MockAddPostCubit();
-    });
-
-    tearDown(() async {
-      await getIt.reset();
     });
 
     //When tap Upload button, must call addPost function of the cubit.
@@ -51,20 +44,13 @@ void main() {
       when(
         () => addPostCubit.addPost(
           any(),
-          // Post(
-          //   userId: any(named: 'userId'),
-          //   id: any(named: 'id'),
-          //   title: any(named: 'title'),
-          //   body: any(named: 'body'),
-          // ),
         ),
       ).thenAnswer((_) async {});
-      getIt.registerSingleton<AddPostCubit>(addPostCubit);
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: Center(
-              child: AddPostView(),
+              child: AddPostView(addPostCubit: addPostCubit),
             ),
           ),
         ),
@@ -88,12 +74,13 @@ void main() {
         (tester) async {
       when(() => addPostCubit.state)
           .thenReturn(AddPostState(status: AddPostStatus.initial));
-      getIt.registerSingleton<AddPostCubit>(addPostCubit);
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: Center(
-              child: AddPostView(),
+              child: AddPostView(
+                addPostCubit: addPostCubit,
+              ),
             ),
           ),
         ),
@@ -107,12 +94,13 @@ void main() {
     testWidgets('Must show loading while loading.', (tester) async {
       when(() => addPostCubit.state)
           .thenReturn(AddPostState(status: AddPostStatus.loading));
-      getIt.registerSingleton<AddPostCubit>(addPostCubit);
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: Center(
-              child: AddPostView(),
+              child: AddPostView(
+                addPostCubit: addPostCubit,
+              ),
             ),
           ),
         ),
@@ -123,46 +111,19 @@ void main() {
     testWidgets('Must show success when success.', (tester) async {
       when(() => addPostCubit.state)
           .thenReturn(AddPostState(status: AddPostStatus.success));
-      getIt.registerSingleton<AddPostCubit>(addPostCubit);
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: Center(
-              child: AddPostView(),
+              child: AddPostView(
+                addPostCubit: addPostCubit,
+              ),
             ),
           ),
         ),
       );
       expect(find.text('Added the post successfully'), findsOneWidget);
     });
-    //Must close dialog when tap Ok button in success state.
-    //failing test case
-    // testWidgets('Must close dialog when tap Ok button in success state.',
-    //     (tester) async {
-    //   //for user list cubit
-    //   userListCubit = MockUserListCubit();
-    //   when(() => userListCubit.state)
-    //       .thenReturn(UserListState(status: UserListStatus.noInternet));
-    //   when(() => userListCubit.init()).thenAnswer((_) async {});
-    //   userRepository = MockUserRepository();
-    //   getIt.registerSingleton<UserRepository>(userRepository);
-    //   //for add post cubit
-    //   when(() => addPostCubit.state)
-    //       .thenReturn(AddPostState(status: AddPostStatus.success));
-    //   getIt.registerSingleton<AddPostCubit>(addPostCubit);
-    //   //act
-    //   await tester.pumpWidget(
-    //     BlocProvider.value(
-    //       value: userListCubit,
-    //       child: MaterialApp(home: UserListView()),
-    //     ),
-    //   );
-    //   await tester.tap(find.byType(FloatingActionButton));
-    //   await tester.pumpAndSettle();
-    //   await tester.tap(find.byKey(ValueKey('ok-success')));
-    //   await tester.pumpAndSettle();
-    //   expect(find.byType(AddPostView), findsNothing);
-    // });
 
     testWidgets('Must close dialog when tap Ok button in success state.',
         (tester) async {
@@ -170,14 +131,15 @@ void main() {
       final goRouter = MockGoRouter();
       when(() => addPostCubit.state)
           .thenReturn(AddPostState(status: AddPostStatus.success));
-      getIt.registerSingleton<AddPostCubit>(addPostCubit);
       when(() => goRouter.pop()).thenAnswer((_) {});
       //act
       await tester.pumpWidget(
         MaterialApp(
           home: MockGoRouterProvider(
             goRouter: goRouter,
-            child: const AddPostView(),
+            child: AddPostView(
+              addPostCubit: addPostCubit,
+            ),
           ),
         ),
       );
@@ -190,12 +152,13 @@ void main() {
     testWidgets('Must show Cannot add post when fail.', (tester) async {
       when(() => addPostCubit.state)
           .thenReturn(AddPostState(status: AddPostStatus.failure));
-      getIt.registerSingleton<AddPostCubit>(addPostCubit);
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: Center(
-              child: AddPostView(),
+              child: AddPostView(
+                addPostCubit: addPostCubit,
+              ),
             ),
           ),
         ),
@@ -206,19 +169,18 @@ void main() {
     testWidgets('Must show No internet when no internet.', (tester) async {
       when(() => addPostCubit.state)
           .thenReturn(AddPostState(status: AddPostStatus.noInternet));
-      getIt.registerSingleton<AddPostCubit>(addPostCubit);
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: Center(
-              child: AddPostView(),
+              child: AddPostView(
+                addPostCubit: addPostCubit,
+              ),
             ),
           ),
         ),
       );
       expect(find.text('No internet'), findsOneWidget);
     });
-
-    //Must call init method of the cubit on start up.
   });
 }

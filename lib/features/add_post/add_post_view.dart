@@ -76,55 +76,52 @@ class _AddPostViewState extends State<AddPostView> {
                   ),
                 );
               }
-              if (state.status == AddPostStatus.initial) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    //user id
-                    MyTextField(
-                      tec: userIdTEC,
-                      label: 'Enter user id',
-                      textInputType: TextInputType.number,
-                      textFieldKey: 'userId',
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  //user id
+                  MyTextField(
+                    tec: userIdTEC,
+                    label: 'Enter user id',
+                    textInputType: TextInputType.number,
+                    textFieldKey: 'userId',
+                  ),
+                  const SizedBox(
+                    height: 4,
+                  ),
 
-                    //title
-                    MyTextField(
-                      tec: titleTEC,
-                      label: 'Enter title',
-                      textFieldKey: 'title',
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    //body
-                    MyTextField(
-                      tec: bodyTEC,
-                      label: 'Body',
-                      textFieldKey: 'body',
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    //upload
-                    ElevatedButton(
-                      onPressed: () {
-                        final post = Post(
-                          userId: int.parse(userIdTEC.text),
-                          title: titleTEC.text,
-                          body: bodyTEC.text,
-                        );
-                        context.read<AddPostCubit>().addPost(post);
-                      },
-                      child: const Text('Upload'),
-                    ),
-                  ],
-                );
-              }
-              return Container();
+                  //title
+                  MyTextField(
+                    tec: titleTEC,
+                    label: 'Enter title',
+                    textFieldKey: 'title',
+                  ),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  //body
+                  MyTextField(
+                    tec: bodyTEC,
+                    label: 'Body',
+                    textFieldKey: 'body',
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  //upload
+                  ElevatedButton(
+                    onPressed: () {
+                      final post = Post(
+                        userId: int.parse(userIdTEC.text),
+                        title: titleTEC.text,
+                        body: bodyTEC.text,
+                      );
+                      context.read<AddPostCubit>().addPost(post);
+                    },
+                    child: const Text('Upload'),
+                  ),
+                ],
+              );
             },
           ),
         ),

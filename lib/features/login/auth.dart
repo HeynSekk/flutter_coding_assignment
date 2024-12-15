@@ -3,8 +3,10 @@ import 'package:flutter_sample_app/main.dart';
 import 'package:flutter_sample_app/util/connection_util.dart';
 
 class Auth {
-  Auth({FirebaseAuth? firebaseAuth})
-      : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
+  // Auth({FirebaseAuth? firebaseAuth})
+  //     : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
+
+  Auth(this._firebaseAuth);
 
   final FirebaseAuth _firebaseAuth;
 

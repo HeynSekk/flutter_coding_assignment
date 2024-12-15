@@ -49,7 +49,7 @@ void main() {
           () => firebaseAuth.currentUser,
         ).thenReturn(user);
 
-        final auth = Auth(firebaseAuth: firebaseAuth);
+        final auth = Auth(firebaseAuth);
 
         final actual = await auth.isAuthenticated();
         expect(actual, true);
@@ -68,7 +68,7 @@ void main() {
           () => firebaseAuth.currentUser,
         ).thenReturn(null);
 
-        final auth = Auth(firebaseAuth: firebaseAuth);
+        final auth = Auth(firebaseAuth);
 
         final actual = await auth.isAuthenticated();
         expect(actual, false);
@@ -92,7 +92,7 @@ void main() {
           () => firebaseAuth.currentUser,
         ).thenReturn(user);
 
-        final auth = Auth(firebaseAuth: firebaseAuth);
+        final auth = Auth(firebaseAuth);
 
         final actual = await auth.isAuthenticated();
         expect(actual, true);
@@ -115,7 +115,7 @@ void main() {
           () => firebaseAuth.currentUser,
         ).thenReturn(user);
 
-        final auth = Auth(firebaseAuth: firebaseAuth);
+        final auth = Auth(firebaseAuth);
 
         final actual = await auth.isAuthenticated();
         expect(actual, false);
@@ -133,7 +133,7 @@ void main() {
               email: any(named: 'email'), password: any(named: 'password')),
         ).thenAnswer((_) async => MockUserCredential());
 
-        final auth = Auth(firebaseAuth: firebaseAuth);
+        final auth = Auth(firebaseAuth);
 
         await auth.login(email: 'e', password: 'p');
         verify(() => firebaseAuth.signInWithEmailAndPassword(
@@ -148,7 +148,7 @@ void main() {
           () => firebaseAuth.signOut(),
         ).thenAnswer((_) async => {});
 
-        final auth = Auth(firebaseAuth: firebaseAuth);
+        final auth = Auth(firebaseAuth);
 
         await auth.logout();
         verify(() => firebaseAuth.signOut()).called(1);

@@ -3,11 +3,11 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_sample_app/features/add_post/add_post_cubit.dart';
 import 'package:flutter_sample_app/features/add_post/add_post_view.dart';
 import 'package:flutter_sample_app/features/login/login_cubit.dart';
 import 'package:flutter_sample_app/features/users_list/user_list_cubit.dart';
 import 'package:flutter_sample_app/features/users_list/users_list_view.dart';
+import 'package:flutter_sample_app/features/users_list/widgets/user_card.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
@@ -35,7 +35,6 @@ void main() {
         'Provide cubits correctly which mean rendering UserListView is ok',
         (tester) async {
       //arrange
-      GetIt getIt = GetIt.instance;
       userListCubit = MockUserListCubit();
       loginCubit = MockLoginCubit();
       when(() => loginCubit.state)
@@ -43,17 +42,17 @@ void main() {
       when(() => userListCubit.state)
           .thenReturn(UserListState(status: UserListStatus.initial));
       when(() => userListCubit.init()).thenAnswer((_) async {});
-      getIt.registerSingleton(userListCubit);
-      getIt.registerSingleton(loginCubit);
       //act
       await tester.pumpWidget(
         MaterialApp(
-          home: UserListPage(),
+          home: UserListPage(
+            userListCubit: userListCubit,
+            loginCubit: loginCubit,
+          ),
         ),
       );
       //assert
       expect(find.byType(UserListView), findsOneWidget);
-      getIt.reset();
     });
   });
 
@@ -116,7 +115,7 @@ void main() {
       when(() => userListCubit.state).thenReturn(
         UserListState(
           status: UserListStatus.success,
-          users: [
+          users: const [
             User(id: 1, name: 'John', email: 'john@example.com'),
             User(id: 1, name: 'Alice', email: 'alice@example.com'),
           ],
@@ -140,6 +139,46 @@ void main() {
       expect(find.text('john@example.com'), findsOneWidget);
       expect(find.text('Alice'), findsOneWidget);
       expect(find.text('alice@example.com'), findsOneWidget);
+    });
+    //Get to user detail page when tap user card.
+    testWidgets(
+        'Get to user detail page, giving correct user data, when tap user card.',
+        (tester) async {
+      final goRouter = MockGoRouter();
+      when(() => goRouter.pushNamed(any(), extra: any(named: 'extra')))
+          .thenAnswer((_) => Future.value(null));
+      when(() => userListCubit.state).thenReturn(
+        UserListState(
+          status: UserListStatus.success,
+          users: const [
+            User(id: 1, name: 'John', email: 'john@example.com'),
+            User(id: 1, name: 'Alice', email: 'alice@example.com'),
+          ],
+        ),
+      );
+      when(() => userListCubit.init()).thenAnswer((_) async {});
+      await tester.pumpWidget(
+        MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (_) => userListCubit,
+            ),
+            BlocProvider.value(
+              value: loginCubit,
+            )
+          ],
+          child: MaterialApp(
+            home: MockGoRouterProvider(
+              goRouter: goRouter,
+              child: const UserListView(),
+            ),
+          ),
+        ),
+      );
+      await tester.tap(find.byType(UserInfoCard).first);
+      verify(() => goRouter.pushNamed('user-detail',
+              extra: User(id: 1, name: 'John', email: 'john@example.com')))
+          .called(1);
     });
     //Must show Cannot fetch user when fail.
     testWidgets('Must show Cannot fetch user when fail.', (tester) async {
@@ -181,6 +220,31 @@ void main() {
       );
       expect(find.text('No internet'), findsOneWidget);
     });
+    //Call fetch method of the cubit when user retry when fetching fail
+    testWidgets(
+        'Call fetch method of the cubit when user retry when fetching fail',
+        (tester) async {
+      when(() => userListCubit.state)
+          .thenReturn(UserListState(status: UserListStatus.noInternet));
+      when(() => userListCubit.init()).thenAnswer((_) async {});
+      when(() => userListCubit.fetchUsers()).thenAnswer((_) async {});
+      await tester.pumpWidget(
+        MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (_) => userListCubit,
+            ),
+            BlocProvider.value(
+              value: loginCubit,
+            )
+          ],
+          child: MaterialApp(home: const UserListView()),
+        ),
+      );
+      await tester.tap(find.text('Retry'));
+      verify(() => userListCubit.fetchUsers()).called(1);
+    });
+
     //Must show Add Post dialog when tap Upload floating button.
     testWidgets('Must show Add Post dialog when tap Upload floating button.',
         (tester) async {
@@ -188,7 +252,7 @@ void main() {
           .thenReturn(UserListState(status: UserListStatus.noInternet));
       when(() => userListCubit.init()).thenAnswer((_) async {});
       userRepository = MockUserRepository();
-      getIt.registerSingleton<AddPostCubit>(AddPostCubit(userRepository));
+      getIt.registerSingleton<UserRepository>(userRepository);
       await tester.pumpWidget(
         MultiBlocProvider(
           providers: [
@@ -316,6 +380,31 @@ void main() {
       );
       //assert
       verify(() => goRouter.goNamed('login')).called(1);
+    });
+    testWidgets('Show json generation status widget above the user list',
+        (tester) async {
+      //arrange
+      when(() => userListCubit.state)
+          .thenReturn(UserListState(status: UserListStatus.success));
+      when(() => userListCubit.init()).thenAnswer((_) async {});
+      //act
+      await tester.pumpWidget(
+        MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (_) => userListCubit,
+            ),
+            BlocProvider.value(
+              value: loginCubit,
+            )
+          ],
+          child: MaterialApp(
+            home: const UserListView(),
+          ),
+        ),
+      );
+      //assert
+      expect(find.byType(JsonGenerationStatus), findsOneWidget);
     });
   });
 }

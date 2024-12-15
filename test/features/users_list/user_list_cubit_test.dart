@@ -186,7 +186,7 @@ void main() {
       //Call correct function of the service with correct input
       blocTest<UserListCubit, UserListState>(
         'Call correct function of the service with correct input',
-        seed: () => UserListState(users: [User(id: 1)]),
+        seed: () => UserListState(users: const [User(id: 1)]),
         setUp: () {
           jsonGenerator = MockJsonGenerator();
           when(
@@ -222,7 +222,7 @@ void main() {
       //Emit failure state when fail
       blocTest<UserListCubit, UserListState>(
         'Emit failure state when fail',
-        seed: () => UserListState(users: [User(id: 1)]),
+        seed: () => UserListState(users: const [User(id: 1)]),
         setUp: () {
           //arrange for UserRepository
           jsonGenerator = MockJsonGenerator();
