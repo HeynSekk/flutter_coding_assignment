@@ -1,4 +1,4 @@
-# flutter_sample_app
+# Flutter Coding Assignment
 
 This project is a coding assignment I did for a company. It passed the test and I got the job offer.
 
@@ -33,14 +33,14 @@ In the future, I would add demonstrations for responsive design, design system, 
 
 
 ## Specs
-Flutter SDK: 3.24.1
-Android SDK: 35
-State management: bloc
-Route management: go_router
-Dependency management: get_it
-Networking: http
-Architecture: MVVM. It has 4 components: View, Cubit/Bloc/Controller/ViewModel, Repository, Service/DataProvider.
-Local storage: hydrated_bloc
+- Flutter SDK: 3.24.1,
+- Android SDK: 35,
+- State management: bloc,
+- Route management: go_router,
+- Dependency management: get_it,
+- Networking: http,
+- Architecture: MVVM. It has 4 components: View, Cubit/Bloc/Controller/ViewModel, Repository, Service/DataProvider,
+- Local storage: hydrated_bloc,
 
 ## How to run the project?
 Since it use Firebase auth, you need a Firebase project and connect this project to it. Follow these steps to add Firebase https://firebase.google.com/docs/flutter/setup?platform=android . Enable email/password Authentication at Firebase console, create a sample account for testing.
@@ -51,9 +51,9 @@ Since it use Firebase auth, you need a Firebase project and connect this project
 
 ### See test coverage
 Run:
-flutter test --coverage
-genhtml coverage/lcov.info -o coverage/html
-open coverage/html/index.html
+- `flutter test --coverage`
+- `genhtml coverage/lcov.info -o coverage/html`
+- `open coverage/html/index.html`
 
 Ref:
 https://stackoverflow.com/questions/50789578/how-can-the-code-coverage-data-from-flutter-tests-be-displayed/53663093#53663093
