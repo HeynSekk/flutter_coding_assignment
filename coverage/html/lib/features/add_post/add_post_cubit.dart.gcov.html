@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
-            <td class="headerCovTableEntry">10</td>
-            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntry">14</td>
+            <td class="headerCovTableEntry">14</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2024-12-15 21:25:41</td>
+            <td class="headerValue">2024-12-16 22:57:58</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -61,38 +61,44 @@
 <pre class="sourceHeading">            Line data    Source code</pre>
 <pre class="source">
 <span id="L1"><span class="lineNum">       1</span>              : import 'package:equatable/equatable.dart';</span>
-<span id="L2"><span class="lineNum">       2</span>              : import 'package:flutter_sample_app/main.dart';</span>
-<span id="L3"><span class="lineNum">       3</span>              : import 'package:flutter_sample_app/util/connection_util.dart';</span>
-<span id="L4"><span class="lineNum">       4</span>              : import 'package:hydrated_bloc/hydrated_bloc.dart';</span>
-<span id="L5"><span class="lineNum">       5</span>              : import 'package:user_repository/user_repository.dart';</span>
-<span id="L6"><span class="lineNum">       6</span>              : </span>
-<span id="L7"><span class="lineNum">       7</span>              : part 'add_post_state.dart';</span>
-<span id="L8"><span class="lineNum">       8</span>              : </span>
-<span id="L9"><span class="lineNum">       9</span>              : class AddPostCubit extends Cubit&lt;AddPostState&gt; {</span>
-<span id="L10"><span class="lineNum">      10</span> <span class="tlaGNC">           4 :   AddPostCubit(this._userRepository) : super(const AddPostState());</span></span>
-<span id="L11"><span class="lineNum">      11</span>              :   final UserRepository _userRepository;</span>
-<span id="L12"><span class="lineNum">      12</span>              : </span>
-<span id="L13"><span class="lineNum">      13</span> <span class="tlaGNC">           1 :   Future&lt;void&gt; addPost(Post post) async {</span></span>
-<span id="L14"><span class="lineNum">      14</span> <span class="tlaGNC">           3 :     final isConnected = await getIt&lt;ConnectionUtil&gt;().isConnected();</span></span>
-<span id="L15"><span class="lineNum">      15</span>              :     if (!isConnected) {</span>
-<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC">           3 :       emit(state.copyWith(status: AddPostStatus.noInternet));</span></span>
-<span id="L17"><span class="lineNum">      17</span>              :       return;</span>
-<span id="L18"><span class="lineNum">      18</span>              :     }</span>
-<span id="L19"><span class="lineNum">      19</span>              : </span>
-<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">           3 :     emit(state.copyWith(status: AddPostStatus.loading));</span></span>
-<span id="L21"><span class="lineNum">      21</span>              : </span>
-<span id="L22"><span class="lineNum">      22</span>              :     try {</span>
-<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">           2 :       await _userRepository.addPost(post);</span></span>
-<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">           1 :       emit(</span></span>
-<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">           2 :         state.copyWith(</span></span>
-<span id="L26"><span class="lineNum">      26</span>              :           status: AddPostStatus.success,</span>
-<span id="L27"><span class="lineNum">      27</span>              :         ),</span>
-<span id="L28"><span class="lineNum">      28</span>              :       );</span>
-<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">           1 :     } on Exception {</span></span>
-<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">           3 :       emit(state.copyWith(status: AddPostStatus.failure));</span></span>
-<span id="L31"><span class="lineNum">      31</span>              :     }</span>
-<span id="L32"><span class="lineNum">      32</span>              :   }</span>
-<span id="L33"><span class="lineNum">      33</span>              : }</span>
+<span id="L2"><span class="lineNum">       2</span>              : import 'package:flutter_sample_app/features/add_post/post.dart' as current;</span>
+<span id="L3"><span class="lineNum">       3</span>              : import 'package:flutter_sample_app/main.dart';</span>
+<span id="L4"><span class="lineNum">       4</span>              : import 'package:flutter_sample_app/util/connection_util.dart';</span>
+<span id="L5"><span class="lineNum">       5</span>              : import 'package:hydrated_bloc/hydrated_bloc.dart';</span>
+<span id="L6"><span class="lineNum">       6</span>              : import 'package:user_repository/user_repository.dart' as repo;</span>
+<span id="L7"><span class="lineNum">       7</span>              : </span>
+<span id="L8"><span class="lineNum">       8</span>              : part 'add_post_state.dart';</span>
+<span id="L9"><span class="lineNum">       9</span>              : </span>
+<span id="L10"><span class="lineNum">      10</span>              : class AddPostCubit extends Cubit&lt;AddPostState&gt; {</span>
+<span id="L11"><span class="lineNum">      11</span> <span class="tlaGNC">           4 :   AddPostCubit(this._userRepository) : super(const AddPostState());</span></span>
+<span id="L12"><span class="lineNum">      12</span>              :   final repo.UserRepository _userRepository;</span>
+<span id="L13"><span class="lineNum">      13</span>              : </span>
+<span id="L14"><span class="lineNum">      14</span> <span class="tlaGNC">           1 :   Future&lt;void&gt; addPost(current.Post post) async {</span></span>
+<span id="L15"><span class="lineNum">      15</span> <span class="tlaGNC">           3 :     final isConnected = await getIt&lt;ConnectionUtil&gt;().isConnected();</span></span>
+<span id="L16"><span class="lineNum">      16</span>              :     if (!isConnected) {</span>
+<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC">           3 :       emit(state.copyWith(status: AddPostStatus.noInternet));</span></span>
+<span id="L18"><span class="lineNum">      18</span>              :       return;</span>
+<span id="L19"><span class="lineNum">      19</span>              :     }</span>
+<span id="L20"><span class="lineNum">      20</span>              : </span>
+<span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC">           3 :     emit(state.copyWith(status: AddPostStatus.loading));</span></span>
+<span id="L22"><span class="lineNum">      22</span>              : </span>
+<span id="L23"><span class="lineNum">      23</span>              :     try {</span>
+<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">           3 :       await _userRepository.addPost(repo.Post(</span></span>
+<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">           1 :         userId: post.userId,</span></span>
+<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC">           1 :         id: post.id,</span></span>
+<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">           1 :         title: post.title,</span></span>
+<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">           1 :         body: post.body,</span></span>
+<span id="L29"><span class="lineNum">      29</span>              :       ));</span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">           1 :       emit(</span></span>
+<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">           2 :         state.copyWith(</span></span>
+<span id="L32"><span class="lineNum">      32</span>              :           status: AddPostStatus.success,</span>
+<span id="L33"><span class="lineNum">      33</span>              :         ),</span>
+<span id="L34"><span class="lineNum">      34</span>              :       );</span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">           1 :     } on Exception {</span></span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">           3 :       emit(state.copyWith(status: AddPostStatus.failure));</span></span>
+<span id="L37"><span class="lineNum">      37</span>              :     }</span>
+<span id="L38"><span class="lineNum">      38</span>              :   }</span>
+<span id="L39"><span class="lineNum">      39</span>              : }</span>
         </pre>
               </td>
             </tr>

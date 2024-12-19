@@ -11,7 +11,6 @@ final class AddPostState extends Equatable {
 
   AddPostState copyWith({
     AddPostStatus? status,
-    List<User>? users,
   }) {
     return AddPostState(
       status: status ?? this.status,

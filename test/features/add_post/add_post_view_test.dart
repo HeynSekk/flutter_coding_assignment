@@ -4,14 +4,12 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sample_app/features/add_post/add_post_cubit.dart';
 import 'package:flutter_sample_app/features/add_post/add_post_view.dart';
+import 'package:flutter_sample_app/features/add_post/post.dart';
 import 'package:flutter_sample_app/features/users_list/user_list_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:user_repository/user_repository.dart';
 
 import '../../helper/mock_go_router.dart';
-
-class MockUserRepository extends Mock implements UserRepository {}
 
 class MockAddPostCubit extends MockCubit<AddPostState>
     implements AddPostCubit {}

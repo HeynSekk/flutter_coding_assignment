@@ -1,16 +1,15 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
-import 'package:user_remote_source/user_remote_source.dart'
-    as user_remote_source;
+import 'package:user_remote_source/user_remote_source.dart' as remote;
 import 'package:user_repository/user_repository.dart';
 
 class MockRemoteSourceApiClient extends Mock
-    implements user_remote_source.RemoteSourceApiClient {}
+    implements remote.RemoteSourceApiClient {}
 
 void main() {
   group('UserRepository', () {
-    late user_remote_source.RemoteSourceApiClient remoteApiClient;
+    late remote.RemoteSourceApiClient remoteApiClient;
     late UserRepository userRepository;
 
     setUp(() {
@@ -35,13 +34,12 @@ void main() {
       });
 
       test('calls addPost of remote api client with correct input', () async {
-        final post = Post(userId: 2);
         try {
-          await userRepository.addPost(post);
+          await userRepository.addPost(Post(userId: 2));
         } catch (_) {}
         verify(
           () => remoteApiClient.addPost(
-            post,
+            remote.Post(userId: 2),
           ),
         ).called(1);
       });

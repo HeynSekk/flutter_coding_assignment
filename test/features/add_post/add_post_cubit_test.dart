@@ -1,20 +1,21 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_sample_app/features/add_post/add_post_cubit.dart';
+import 'package:flutter_sample_app/features/add_post/post.dart';
 import 'package:flutter_sample_app/util/connection_util.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:user_repository/user_repository.dart';
+import 'package:user_repository/user_repository.dart' as repo;
 
-class MockUserRepository extends Mock implements UserRepository {}
+class MockUserRepository extends Mock implements repo.UserRepository {}
 
 class MockConnectionUtil extends Mock implements ConnectionUtil {}
 
 void main() {
   group('AddPostCubit', () {
     GetIt getIt = GetIt.instance;
-    late UserRepository userRepository;
+    late repo.UserRepository userRepository;
     late ConnectionUtil connectionUtil;
     late AddPostCubit addPostCubit;
 
@@ -30,6 +31,7 @@ void main() {
 
     group('addPost', () {
       final inputPost = Post(userId: 2, title: 'nice title');
+      final inputPostRepo = repo.Post(userId: 2, title: 'nice title');
       //No internet, add post, must emit noInternet.
       blocTest<AddPostCubit, AddPostState>(
         'No internet, add post, must emit noInternet.',
@@ -65,7 +67,7 @@ void main() {
           //arrange for UserRepository
           userRepository = MockUserRepository();
           when(
-            () => userRepository.addPost(inputPost),
+            () => userRepository.addPost(inputPostRepo),
           ).thenAnswer((_) async {});
           //arrange for AddPostCubit
           addPostCubit = AddPostCubit(userRepository);
@@ -73,7 +75,7 @@ void main() {
         build: () => addPostCubit,
         act: (cubit) => cubit.addPost(inputPost),
         verify: (cubit) {
-          verify(() => userRepository.addPost(inputPost)).called(1);
+          verify(() => userRepository.addPost(inputPostRepo)).called(1);
         },
       );
       //Add post succeed, must emit loading, and success
@@ -89,7 +91,7 @@ void main() {
           //arrange for UserRepository
           userRepository = MockUserRepository();
           when(
-            () => userRepository.addPost(inputPost),
+            () => userRepository.addPost(inputPostRepo),
           ).thenAnswer((_) async {});
           //arrange for AddPostCubit
           addPostCubit = AddPostCubit(userRepository);
@@ -116,7 +118,7 @@ void main() {
           //arrange for UserRepository
           userRepository = MockUserRepository();
           when(
-            () => userRepository.addPost(inputPost),
+            () => userRepository.addPost(inputPostRepo),
           ).thenThrow(Exception('oopps'));
           //arrange for AddPostCubit
           addPostCubit = AddPostCubit(userRepository);

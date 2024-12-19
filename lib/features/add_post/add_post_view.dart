@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sample_app/features/add_post/add_post_cubit.dart';
+import 'package:flutter_sample_app/features/add_post/post.dart';
 import 'package:flutter_sample_app/presentation/widgets/my_text_field.dart';
 import 'package:go_router/go_router.dart';
-import 'package:user_repository/user_repository.dart';
 
 class AddPostView extends StatefulWidget {
   final AddPostCubit addPostCubit;
