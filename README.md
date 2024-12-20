@@ -47,7 +47,7 @@ Since it use Firebase auth, you need a Firebase project and connect this project
 
 - We can run the app by running `flutter pub get`, `flutter run`.
 - Run `flutter test` or use GUI of IDEs like VS Code to run tests.
-- If you changed DTO related files, go to correct dir and run `dart run build_runner build`.
+- If you changed DTO related files, go to correct dir and run `dart run build_runner build --delete-conflicting-outputs`.
 
 ### See test coverage
 Run:

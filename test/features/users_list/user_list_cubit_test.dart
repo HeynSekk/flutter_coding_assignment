@@ -43,9 +43,28 @@ void main() {
         userRepository = MockUserRepository();
         jsonGenerator = MockJsonGenerator();
         final userListCubit = UserListCubit(userRepository, jsonGenerator);
+        final sampleState = userListCubit.state.copyWith(
+          status: UserListStatus.initial,
+          users: [
+            current.User(
+              id: 1,
+              address: current.Address(
+                city: 'city',
+                geo: current.Geo(
+                  lat: "1",
+                ),
+              ),
+              company: current.Company(
+                name: 'name',
+              ),
+            ),
+          ],
+        );
+        final stateJson = userListCubit.toJson(sampleState);
+        final stateObject = userListCubit.fromJson(stateJson);
         expect(
-          userListCubit.fromJson(userListCubit.toJson(userListCubit.state)),
-          userListCubit.state,
+          stateObject,
+          sampleState,
         );
       });
     });
@@ -134,7 +153,10 @@ void main() {
       setUp(() {
         jsonGenerator = MockJsonGenerator();
       });
-      final users = [User(id: 1), User(id: 2)];
+      final users = [
+        User(id: 1, address: Address(city: 'City 1')),
+        User(id: 2)
+      ];
       //Emit success state with correct users when succeed
       blocTest<UserListCubit, UserListState>(
         'Emit success state with correct users when succeed',
@@ -154,6 +176,7 @@ void main() {
               .having((s) => s.status, 'status', UserListStatus.loading),
           isA<UserListState>()
               .having((s) => s.status, 'status', UserListStatus.success)
+              .having((s) => s.users[0].id, 'id of second user', 1)
               .having((s) => s.users[1].id, 'id of second user', 2),
         ],
       );

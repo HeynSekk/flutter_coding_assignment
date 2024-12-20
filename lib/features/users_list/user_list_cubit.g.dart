@@ -7,19 +7,32 @@ part of 'user_list_cubit.dart';
 // **************************************************************************
 
 UserListState _$UserListStateFromJson(Map<String, dynamic> json) =>
-    UserListState(
-      status: $enumDecodeNullable(_$UserListStatusEnumMap, json['status']) ??
-          UserListStatus.initial,
-      users: (json['users'] as List<dynamic>?)
-              ?.map((e) => User.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const [],
+    $checkedCreate(
+      'UserListState',
+      json,
+      ($checkedConvert) {
+        final val = UserListState(
+          status: $checkedConvert(
+              'status',
+              (v) =>
+                  $enumDecodeNullable(_$UserListStatusEnumMap, v) ??
+                  UserListStatus.initial),
+          users: $checkedConvert(
+              'users',
+              (v) =>
+                  (v as List<dynamic>?)
+                      ?.map((e) => User.fromJson(e as Map<String, dynamic>))
+                      .toList() ??
+                  const []),
+        );
+        return val;
+      },
     );
 
 Map<String, dynamic> _$UserListStateToJson(UserListState instance) =>
     <String, dynamic>{
       'status': _$UserListStatusEnumMap[instance.status]!,
-      'users': instance.users,
+      'users': instance.users.map((e) => e.toJson()).toList(),
     };
 
 const _$UserListStatusEnumMap = {
