@@ -7,7 +7,9 @@ import 'package:flutter_sample_app/features/users_list/users_list_view.dart';
 import 'package:flutter_sample_app/main.dart';
 import 'package:flutter_sample_app/util/json_generator.dart';
 import 'package:go_router/go_router.dart';
-import 'package:user_repository/user_repository.dart';
+import 'package:user_repository/user_repository.dart' hide User;
+
+import '../models/user.dart';
 
 final router = GoRouter(
   initialLocation: '/',
