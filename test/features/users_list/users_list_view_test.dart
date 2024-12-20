@@ -8,15 +8,16 @@ import 'package:flutter_sample_app/features/login/login_cubit.dart';
 import 'package:flutter_sample_app/features/users_list/user_list_cubit.dart';
 import 'package:flutter_sample_app/features/users_list/users_list_view.dart';
 import 'package:flutter_sample_app/features/users_list/widgets/user_card.dart';
+import 'package:flutter_sample_app/models/user.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:user_repository/user_repository.dart';
+import 'package:user_repository/user_repository.dart' as repo;
 
 import '../../helper/hydrated_bloc.dart';
 import '../../helper/mock_go_router.dart';
 
-class MockUserRepository extends Mock implements UserRepository {}
+class MockUserRepository extends Mock implements repo.UserRepository {}
 
 class MockUserListCubit extends MockCubit<UserListState>
     implements UserListCubit {}
@@ -59,7 +60,7 @@ void main() {
   group('UserListView', () {
     late UserListCubit userListCubit;
     late LoginCubit loginCubit;
-    late UserRepository userRepository;
+    late repo.UserRepository userRepository;
 
     setUp(() {
       userListCubit = MockUserListCubit();
@@ -252,7 +253,7 @@ void main() {
           .thenReturn(UserListState(status: UserListStatus.noInternet));
       when(() => userListCubit.init()).thenAnswer((_) async {});
       userRepository = MockUserRepository();
-      getIt.registerSingleton<UserRepository>(userRepository);
+      getIt.registerSingleton<repo.UserRepository>(userRepository);
       await tester.pumpWidget(
         MultiBlocProvider(
           providers: [

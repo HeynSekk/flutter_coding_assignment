@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:user_repository/user_repository.dart' as repo;
 
 part 'user.g.dart';
 
@@ -24,6 +25,32 @@ class User extends Equatable {
     this.website,
     this.company,
   });
+
+  factory User.fromRepo(repo.User user) {
+    return User(
+      id: user.id,
+      name: user.name,
+      username: user.username,
+      email: user.email,
+      address: Address(
+        street: user.address?.street,
+        suite: user.address?.suite,
+        city: user.address?.city,
+        zipcode: user.address?.zipcode,
+        geo: Geo(
+          lat: user.address?.geo?.lat,
+          lng: user.address?.geo?.lng,
+        ),
+      ),
+      phone: user.phone,
+      website: user.website,
+      company: Company(
+        name: user.company?.name,
+        catchPhrase: user.company?.catchPhrase,
+        bs: user.company?.bs,
+      ),
+    );
+  }
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 

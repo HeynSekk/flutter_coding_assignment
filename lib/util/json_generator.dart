@@ -3,7 +3,8 @@ import 'dart:io';
 
 import 'package:cr_file_saver/file_saver.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:user_repository/user_repository.dart';
+
+import '../models/user.dart';
 
 //TODO add tests
 class JsonGenerator {

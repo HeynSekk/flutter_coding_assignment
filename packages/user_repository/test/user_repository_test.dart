@@ -44,5 +44,20 @@ void main() {
         ).called(1);
       });
     });
+
+    group('getUsers', () {
+      test(
+          'get the result of api client and transform remote.User to current.User object',
+          () async {
+        when(
+          () => remoteApiClient.fetchUsers(),
+        ).thenAnswer((_) async => [remote.User(name: 'John')]);
+        List<User> users = await userRepository.getUsers();
+        expect(
+          users[0],
+          isA<User>().having((l) => l.name, 'name', 'John'),
+        );
+      });
+    });
   });
 }

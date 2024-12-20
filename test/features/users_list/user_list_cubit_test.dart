@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_sample_app/features/users_list/user_list_cubit.dart';
+import 'package:flutter_sample_app/models/user.dart' as current;
 import 'package:flutter_sample_app/util/connection_util.dart';
 import 'package:flutter_sample_app/util/json_generator.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -186,7 +187,7 @@ void main() {
       //Call correct function of the service with correct input
       blocTest<UserListCubit, UserListState>(
         'Call correct function of the service with correct input',
-        seed: () => UserListState(users: const [User(id: 1)]),
+        seed: () => UserListState(users: const [current.User(id: 1)]),
         setUp: () {
           jsonGenerator = MockJsonGenerator();
           when(
@@ -222,7 +223,7 @@ void main() {
       //Emit failure state when fail
       blocTest<UserListCubit, UserListState>(
         'Emit failure state when fail',
-        seed: () => UserListState(users: const [User(id: 1)]),
+        seed: () => UserListState(users: const [current.User(id: 1)]),
         setUp: () {
           //arrange for UserRepository
           jsonGenerator = MockJsonGenerator();

@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_sample_app/features/users_list/widgets/user_card.dart';
+import 'package:flutter_sample_app/models/user.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:user_repository/user_repository.dart';
 
 void main() {
   group('UserInfoCard', () {

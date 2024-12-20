@@ -19,10 +19,10 @@ final class LoginState extends Equatable {
   final LoginStatus status;
 
   LoginState copyWith({
-    LoginStatus? status,
+    required LoginStatus status,
   }) {
     return LoginState(
-      status: status ?? this.status,
+      status: status,
     );
   }
 

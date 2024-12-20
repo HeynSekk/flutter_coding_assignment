@@ -10,10 +10,10 @@ final class AddPostState extends Equatable {
   final AddPostStatus status;
 
   AddPostState copyWith({
-    AddPostStatus? status,
+    required AddPostStatus status,
   }) {
     return AddPostState(
-      status: status ?? this.status,
+      status: status,
     );
   }
 

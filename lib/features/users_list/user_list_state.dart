@@ -21,11 +21,11 @@ final class UserListState extends Equatable {
   final List<User> users;
 
   UserListState copyWith({
-    UserListStatus? status,
+    required UserListStatus status,
     List<User>? users,
   }) {
     return UserListState(
-      status: status ?? this.status,
+      status: status,
       users: users ?? this.users,
     );
   }

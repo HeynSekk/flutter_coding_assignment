@@ -4,7 +4,9 @@ import 'package:flutter_sample_app/util/connection_util.dart';
 import 'package:flutter_sample_app/util/json_generator.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:user_repository/user_repository.dart';
+import 'package:user_repository/user_repository.dart' as repo;
+
+import '../../models/user.dart';
 
 part 'user_list_cubit.g.dart';
 part 'user_list_state.dart';
@@ -12,7 +14,7 @@ part 'user_list_state.dart';
 class UserListCubit extends HydratedCubit<UserListState> {
   UserListCubit(this._userRepository, this._jsonGenerator)
       : super(const UserListState());
-  final UserRepository _userRepository;
+  final repo.UserRepository _userRepository;
   final JsonGenerator _jsonGenerator;
 
   Future<void> init() async {
@@ -40,7 +42,7 @@ class UserListCubit extends HydratedCubit<UserListState> {
       emit(
         state.copyWith(
           status: UserListStatus.success,
-          users: users,
+          users: users.map((e) => User.fromRepo(e)).toList(),
         ),
       );
     } on Exception {

@@ -1,9 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:json_annotation/json_annotation.dart';
 
-part 'post.g.dart';
-
-@JsonSerializable()
 class Post extends Equatable {
   final int? userId;
   final int? id;
@@ -19,6 +15,4 @@ class Post extends Equatable {
 
   @override
   List<Object> get props => [userId ?? '', id ?? '', title ?? '', body ?? ''];
-
-  Map<String, dynamic> toJson() => _$PostToJson(this);
 }

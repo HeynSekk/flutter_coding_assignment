@@ -17,8 +17,8 @@ class Post extends Equatable {
     this.body,
   });
 
-  @override
-  List<Object> get props => [userId ?? '', id ?? '', title ?? '', body ?? ''];
-
   Map<String, dynamic> toJson() => _$PostToJson(this);
+
+  @override
+  List<Object?> get props => [userId, id, title, body];
 }
