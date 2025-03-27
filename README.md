@@ -66,7 +66,7 @@ https://stackoverflow.com/questions/50789578/how-can-the-code-coverage-data-from
 
 ## Notes
 - If cannot test the app, please kindly use VPN.
-- Most components has automated tests written. And some components do not have tests.
+- Most components has automated tests written. (90.3% line coverage right now) And some components do not have tests.
 
 
 
