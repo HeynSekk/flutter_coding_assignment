@@ -123,6 +123,39 @@ class _UserListViewState extends State<UserListView> {
                   padding: const EdgeInsets.only(top: 16),
                   child: Column(
                     children: [
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          context.pushNamed('sample-screen');
+                        },
+                        child: const Text('Screen 1'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          context.pushNamed('sample-screen2');
+                        },
+                        child: const Text('Screen 2'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          context.pushNamed('sample-screen3');
+                        },
+                        child: const Text('Screen 3'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          context.pushNamed('sample-screen4');
+                        },
+                        child: const Text('Screen 4'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          context.pushNamed('sample-screen5');
+                        },
+                        child: const Text('Screen 5'),
+                      ),
                       JsonGenerationStatus(
                         userListStatus: state.status,
                       ),
