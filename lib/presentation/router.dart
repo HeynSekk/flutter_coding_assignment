@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter_sample_app/features/login/auth.dart';
 import 'package:flutter_sample_app/features/login/login_cubit.dart';
 import 'package:flutter_sample_app/features/login/login_view.dart';
@@ -19,7 +20,7 @@ final router = GoRouter(
       path: '/',
       builder: (context, state) {
         return LoginPage(
-          loginCubit: LoginCubit(getIt<Auth>()),
+          loginCubit: LoginCubit(Auth(FirebaseAuth.instance)),
         );
       },
     ),
@@ -30,9 +31,9 @@ final router = GoRouter(
         return UserListPage(
           userListCubit: UserListCubit(
             getIt<UserRepository>(),
-            getIt<JsonGenerator>(),
+            JsonGenerator(),
           ),
-          loginCubit: LoginCubit(getIt<Auth>()),
+          loginCubit: LoginCubit(Auth(FirebaseAuth.instance)),
         );
       },
     ),

@@ -49,3 +49,25 @@ class UserRepository {
     ));
   }
 }
+
+// class ErrHandlerForUi {
+//   static void handle(BuildContext context, String errMsg) {
+//     showDialog(
+//       context: context,
+//       builder: (context) {
+//         return AlertDialog(
+//           title: const Text('Error'),
+//           content: Text(errMsg),
+//           actions: <Widget>[
+//             TextButton(
+//               onPressed: () {
+//                 Navigator.of(context).pop();
+//               },
+//               child: const Text('OK'),
+//             ),
+//           ],
+//         );
+//       },
+//     );
+//   }
+// }
