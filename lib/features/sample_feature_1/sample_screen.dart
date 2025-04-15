@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sample_app/features/sample_feature_1/sample_cubit.dart';
-import 'package:flutter_sample_app/main.dart';
 
 class SampleScreen extends StatelessWidget {
-  const SampleScreen({super.key});
+  final SampleCubit sampleCubit;
+  const SampleScreen({super.key, required this.sampleCubit});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class SampleScreen extends StatelessWidget {
             ),
             ElevatedButton(
                 onPressed: () {
-                  getIt<SampleCubit>().init();
+                  sampleCubit.init();
                 },
                 child: const Text('go')),
           ],
@@ -38,7 +38,8 @@ class SampleScreen extends StatelessWidget {
 }
 
 class SampleScreen2 extends StatelessWidget {
-  const SampleScreen2({super.key});
+  final SampleCubit2 sampleCubit;
+  const SampleScreen2({super.key, required this.sampleCubit});
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +56,7 @@ class SampleScreen2 extends StatelessWidget {
             ),
             ElevatedButton(
                 onPressed: () {
-                  getIt<SampleCubit2>().init();
+                  sampleCubit.init();
                 },
                 child: const Text('go')),
           ],
@@ -73,7 +74,8 @@ class SampleScreen2 extends StatelessWidget {
 }
 
 class SampleScreen3 extends StatelessWidget {
-  const SampleScreen3({super.key});
+  final SampleCubit3 sampleCubit;
+  const SampleScreen3({super.key, required this.sampleCubit});
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +92,7 @@ class SampleScreen3 extends StatelessWidget {
             ),
             ElevatedButton(
                 onPressed: () {
-                  getIt<SampleCubit3>().init();
+                  sampleCubit.init();
                 },
                 child: const Text('go')),
           ],
@@ -108,7 +110,8 @@ class SampleScreen3 extends StatelessWidget {
 }
 
 class SampleScreen4 extends StatelessWidget {
-  const SampleScreen4({super.key});
+  final SampleCubit4 sampleCubit;
+  const SampleScreen4({super.key, required this.sampleCubit});
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +128,7 @@ class SampleScreen4 extends StatelessWidget {
             ),
             ElevatedButton(
                 onPressed: () {
-                  getIt<SampleCubit4>().init();
+                  sampleCubit.init();
                 },
                 child: const Text('go')),
           ],
@@ -143,7 +146,8 @@ class SampleScreen4 extends StatelessWidget {
 }
 
 class SampleScreen5 extends StatelessWidget {
-  const SampleScreen5({super.key});
+  final SampleCubit5 sampleCubit;
+  const SampleScreen5({super.key, required this.sampleCubit});
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +164,7 @@ class SampleScreen5 extends StatelessWidget {
             ),
             ElevatedButton(
                 onPressed: () {
-                  getIt<SampleCubit5>().init();
+                  sampleCubit.init();
                 },
                 child: const Text('go')),
           ],

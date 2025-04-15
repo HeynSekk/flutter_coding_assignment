@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter_sample_app/features/login/auth.dart';
 import 'package:flutter_sample_app/features/login/login_cubit.dart';
 import 'package:flutter_sample_app/features/login/login_view.dart';
+import 'package:flutter_sample_app/features/sample_feature_1/sample_cubit.dart';
 import 'package:flutter_sample_app/features/sample_feature_1/sample_screen.dart';
 import 'package:flutter_sample_app/features/user_detail/user_detail_view.dart';
 import 'package:flutter_sample_app/features/users_list/user_list_cubit.dart';
@@ -50,35 +51,60 @@ final router = GoRouter(
       name: 'sample-screen',
       path: '/sample-screen',
       builder: (context, state) {
-        return const SampleScreen();
+        return SampleScreen(
+          sampleCubit: SampleCubit(
+            getIt<UserRepository>(),
+            getIt<JsonGenerator>(),
+          ),
+        );
       },
     ),
     GoRoute(
       name: 'sample-screen2',
       path: '/sample-screen2',
       builder: (context, state) {
-        return const SampleScreen2();
+        return SampleScreen2(
+          sampleCubit: SampleCubit2(
+            getIt<UserRepository>(),
+            getIt<JsonGenerator>(),
+          ),
+        );
       },
     ),
     GoRoute(
       name: 'sample-screen3',
       path: '/sample-screen3',
       builder: (context, state) {
-        return const SampleScreen3();
+        return SampleScreen3(
+          sampleCubit: SampleCubit3(
+            getIt<UserRepository>(),
+            getIt<JsonGenerator>(),
+          ),
+        );
       },
     ),
     GoRoute(
       name: 'sample-screen4',
       path: '/sample-screen4',
       builder: (context, state) {
-        return const SampleScreen4();
+        return SampleScreen4(
+          sampleCubit: SampleCubit4(
+            getIt<UserRepository>(),
+            getIt<JsonGenerator>(),
+          ),
+        );
       },
     ),
     GoRoute(
       name: 'sample-screen5',
       path: '/sample-screen5',
       builder: (context, state) {
-        return const SampleScreen5();
+        return SampleScreen5(
+          sampleCubit: SampleCubit5(
+            getIt<UserRepository>(),
+            getIt<JsonGenerator>(),
+          ),
+        );
       },
     ),
   ],
