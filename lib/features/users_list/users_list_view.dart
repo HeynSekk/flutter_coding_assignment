@@ -87,8 +87,7 @@ class _UserListViewState extends State<UserListView> {
         },
         child: BlocBuilder<UserListCubit, UserListState>(
           builder: (context, state) {
-            if (state.status == UserListStatus.noInternet ||
-                state.status == UserListStatus.failure) {
+            if (state.status == UserListStatus.noInternet) {
               return Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
