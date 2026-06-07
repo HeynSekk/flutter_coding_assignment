@@ -33,28 +33,31 @@ void main() {
     late LoginCubit loginCubit;
 
     testWidgets(
-        'Provide cubits correctly which mean rendering UserListView is ok',
-        (tester) async {
-      //arrange
-      userListCubit = MockUserListCubit();
-      loginCubit = MockLoginCubit();
-      when(() => loginCubit.state)
-          .thenReturn(LoginState(status: LoginStatus.initial));
-      when(() => userListCubit.state)
-          .thenReturn(UserListState(status: UserListStatus.initial));
-      when(() => userListCubit.init()).thenAnswer((_) async {});
-      //act
-      await tester.pumpWidget(
-        MaterialApp(
-          home: UserListPage(
-            userListCubit: userListCubit,
-            loginCubit: loginCubit,
+      'Provide cubits correctly which mean rendering UserListView is ok',
+      (tester) async {
+        //arrange
+        userListCubit = MockUserListCubit();
+        loginCubit = MockLoginCubit();
+        when(
+          () => loginCubit.state,
+        ).thenReturn(LoginState(status: LoginStatus.initial));
+        when(
+          () => userListCubit.state,
+        ).thenReturn(UserListState(status: UserListStatus.initial));
+        when(() => userListCubit.init()).thenAnswer((_) async {});
+        //act
+        await tester.pumpWidget(
+          MaterialApp(
+            home: UserListPage(
+              userListCubit: userListCubit,
+              loginCubit: loginCubit,
+            ),
           ),
-        ),
-      );
-      //assert
-      expect(find.byType(UserListView), findsOneWidget);
-    });
+        );
+        //assert
+        expect(find.byType(UserListView), findsOneWidget);
+      },
+    );
   });
 
   group('UserListView', () {
@@ -65,25 +68,24 @@ void main() {
     setUp(() {
       userListCubit = MockUserListCubit();
       loginCubit = MockLoginCubit();
-      when(() => loginCubit.state)
-          .thenReturn(LoginState(status: LoginStatus.initial));
+      when(
+        () => loginCubit.state,
+      ).thenReturn(LoginState(status: LoginStatus.initial));
     });
 
     //Must call init method of the cubit on start up.
-    testWidgets('Must call init method of the cubit on start up.',
-        (tester) async {
-      when(() => userListCubit.state)
-          .thenReturn(UserListState(status: UserListStatus.loading));
+    testWidgets('Must call init method of the cubit on start up.', (
+      tester,
+    ) async {
+      when(
+        () => userListCubit.state,
+      ).thenReturn(UserListState(status: UserListStatus.loading));
       when(() => userListCubit.init()).thenAnswer((_) async {});
       await tester.pumpWidget(
         MultiBlocProvider(
           providers: [
-            BlocProvider(
-              create: (_) => userListCubit,
-            ),
-            BlocProvider.value(
-              value: loginCubit,
-            )
+            BlocProvider(create: (_) => userListCubit),
+            BlocProvider.value(value: loginCubit),
           ],
           child: MaterialApp(home: const UserListView()),
         ),
@@ -93,18 +95,15 @@ void main() {
 
     //Must show loading while loading.
     testWidgets('Must show loading while loading.', (tester) async {
-      when(() => userListCubit.state)
-          .thenReturn(UserListState(status: UserListStatus.loading));
+      when(
+        () => userListCubit.state,
+      ).thenReturn(UserListState(status: UserListStatus.loading));
       when(() => userListCubit.init()).thenAnswer((_) async {});
       await tester.pumpWidget(
         MultiBlocProvider(
           providers: [
-            BlocProvider(
-              create: (_) => userListCubit,
-            ),
-            BlocProvider.value(
-              value: loginCubit,
-            )
+            BlocProvider(create: (_) => userListCubit),
+            BlocProvider.value(value: loginCubit),
           ],
           child: MaterialApp(home: const UserListView()),
         ),
@@ -126,12 +125,8 @@ void main() {
       await tester.pumpWidget(
         MultiBlocProvider(
           providers: [
-            BlocProvider(
-              create: (_) => userListCubit,
-            ),
-            BlocProvider.value(
-              value: loginCubit,
-            )
+            BlocProvider(create: (_) => userListCubit),
+            BlocProvider.value(value: loginCubit),
           ],
           child: MaterialApp(home: const UserListView()),
         ),
@@ -143,58 +138,56 @@ void main() {
     });
     //Get to user detail page when tap user card.
     testWidgets(
-        'Get to user detail page, giving correct user data, when tap user card.',
-        (tester) async {
-      final goRouter = MockGoRouter();
-      when(() => goRouter.pushNamed(any(), extra: any(named: 'extra')))
-          .thenAnswer((_) => Future.value(null));
-      when(() => userListCubit.state).thenReturn(
-        UserListState(
-          status: UserListStatus.success,
-          users: const [
-            User(id: 1, name: 'John', email: 'john@example.com'),
-            User(id: 1, name: 'Alice', email: 'alice@example.com'),
-          ],
-        ),
-      );
-      when(() => userListCubit.init()).thenAnswer((_) async {});
-      await tester.pumpWidget(
-        MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (_) => userListCubit,
-            ),
-            BlocProvider.value(
-              value: loginCubit,
-            )
-          ],
-          child: MaterialApp(
-            home: MockGoRouterProvider(
-              goRouter: goRouter,
-              child: const UserListView(),
+      'Get to user detail page, giving correct user data, when tap user card.',
+      (tester) async {
+        final goRouter = MockGoRouter();
+        when(
+          () => goRouter.pushNamed(any(), extra: any(named: 'extra')),
+        ).thenAnswer((_) => Future.value(null));
+        when(() => userListCubit.state).thenReturn(
+          UserListState(
+            status: UserListStatus.success,
+            users: const [
+              User(id: 1, name: 'John', email: 'john@example.com'),
+              User(id: 1, name: 'Alice', email: 'alice@example.com'),
+            ],
+          ),
+        );
+        when(() => userListCubit.init()).thenAnswer((_) async {});
+        await tester.pumpWidget(
+          MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (_) => userListCubit),
+              BlocProvider.value(value: loginCubit),
+            ],
+            child: MaterialApp(
+              home: MockGoRouterProvider(
+                goRouter: goRouter,
+                child: const UserListView(),
+              ),
             ),
           ),
-        ),
-      );
-      await tester.tap(find.byType(UserInfoCard).first);
-      verify(() => goRouter.pushNamed('user-detail',
-              extra: User(id: 1, name: 'John', email: 'john@example.com')))
-          .called(1);
-    });
+        );
+        await tester.tap(find.byType(UserInfoCard).first);
+        verify(
+          () => goRouter.pushNamed(
+            'user-detail',
+            extra: User(id: 1, name: 'John', email: 'john@example.com'),
+          ),
+        ).called(1);
+      },
+    );
     //Must show Cannot fetch user when fail.
     testWidgets('Must show Cannot fetch user when fail.', (tester) async {
-      when(() => userListCubit.state)
-          .thenReturn(UserListState(status: UserListStatus.failure));
+      when(
+        () => userListCubit.state,
+      ).thenReturn(UserListState(status: UserListStatus.failure));
       when(() => userListCubit.init()).thenAnswer((_) async {});
       await tester.pumpWidget(
         MultiBlocProvider(
           providers: [
-            BlocProvider(
-              create: (_) => userListCubit,
-            ),
-            BlocProvider.value(
-              value: loginCubit,
-            )
+            BlocProvider(create: (_) => userListCubit),
+            BlocProvider.value(value: loginCubit),
           ],
           child: MaterialApp(home: const UserListView()),
         ),
@@ -203,66 +196,79 @@ void main() {
     });
     //Must show No internet when no internet.
     testWidgets('Must show No internet when no internet.', (tester) async {
-      when(() => userListCubit.state)
-          .thenReturn(UserListState(status: UserListStatus.noInternet));
+      when(() => userListCubit.state).thenReturn(
+        UserListState(
+          status: UserListStatus.failure,
+          message: 'Exception: No internet connection',
+        ),
+      );
       when(() => userListCubit.init()).thenAnswer((_) async {});
       await tester.pumpWidget(
         MultiBlocProvider(
           providers: [
-            BlocProvider(
-              create: (_) => userListCubit,
-            ),
-            BlocProvider.value(
-              value: loginCubit,
-            )
+            BlocProvider(create: (_) => userListCubit),
+            BlocProvider.value(value: loginCubit),
           ],
           child: MaterialApp(home: const UserListView()),
         ),
       );
-      expect(find.text('No internet'), findsOneWidget);
+      expect(find.text('Exception: No internet connection'), findsOneWidget);
+    });
+    testWidgets('Show Unauthorized snackbar when Unauthorized', (tester) async {
+      when(
+        () => userListCubit.state,
+      ).thenReturn(UserListState(status: UserListStatus.unauthorized));
+      when(() => userListCubit.init()).thenAnswer((_) async {});
+      await tester.pumpWidget(
+        MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (_) => userListCubit),
+            BlocProvider.value(value: loginCubit),
+          ],
+          child: MaterialApp(home: const UserListView()),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(SnackBar), findsOneWidget);
     });
     //Call fetch method of the cubit when user retry when fetching fail
     testWidgets(
-        'Call fetch method of the cubit when user retry when fetching fail',
-        (tester) async {
-      when(() => userListCubit.state)
-          .thenReturn(UserListState(status: UserListStatus.noInternet));
-      when(() => userListCubit.init()).thenAnswer((_) async {});
-      when(() => userListCubit.fetchUsers()).thenAnswer((_) async {});
-      await tester.pumpWidget(
-        MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (_) => userListCubit,
-            ),
-            BlocProvider.value(
-              value: loginCubit,
-            )
-          ],
-          child: MaterialApp(home: const UserListView()),
-        ),
-      );
-      await tester.tap(find.text('Retry'));
-      verify(() => userListCubit.fetchUsers()).called(1);
-    });
+      'Call fetch method of the cubit when user retry when fetching fail',
+      (tester) async {
+        when(
+          () => userListCubit.state,
+        ).thenReturn(UserListState(status: UserListStatus.failure));
+        when(() => userListCubit.init()).thenAnswer((_) async {});
+        when(() => userListCubit.fetchUsers()).thenAnswer((_) async {});
+        await tester.pumpWidget(
+          MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (_) => userListCubit),
+              BlocProvider.value(value: loginCubit),
+            ],
+            child: MaterialApp(home: const UserListView()),
+          ),
+        );
+        await tester.tap(find.text('Retry'));
+        verify(() => userListCubit.fetchUsers()).called(1);
+      },
+    );
 
     //Must show Add Post dialog when tap Upload floating button.
-    testWidgets('Must show Add Post dialog when tap Upload floating button.',
-        (tester) async {
-      when(() => userListCubit.state)
-          .thenReturn(UserListState(status: UserListStatus.noInternet));
+    testWidgets('Must show Add Post dialog when tap Upload floating button.', (
+      tester,
+    ) async {
+      when(
+        () => userListCubit.state,
+      ).thenReturn(UserListState(status: UserListStatus.failure));
       when(() => userListCubit.init()).thenAnswer((_) async {});
       userRepository = MockUserRepository();
       getIt.registerSingleton<repo.UserRepository>(userRepository);
       await tester.pumpWidget(
         MultiBlocProvider(
           providers: [
-            BlocProvider(
-              create: (_) => userListCubit,
-            ),
-            BlocProvider.value(
-              value: loginCubit,
-            )
+            BlocProvider(create: (_) => userListCubit),
+            BlocProvider.value(value: loginCubit),
           ],
           child: MaterialApp(home: const UserListView()),
         ),
@@ -274,21 +280,15 @@ void main() {
     });
     //When user list is large, must be ok to show all users in a scroll view.
     testWidgets('Must use a scrollable', (tester) async {
-      when(() => userListCubit.state).thenReturn(
-        UserListState(
-          status: UserListStatus.success,
-        ),
-      );
+      when(
+        () => userListCubit.state,
+      ).thenReturn(UserListState(status: UserListStatus.success));
       when(() => userListCubit.init()).thenAnswer((_) async {});
       await tester.pumpWidget(
         MultiBlocProvider(
           providers: [
-            BlocProvider(
-              create: (_) => userListCubit,
-            ),
-            BlocProvider.value(
-              value: loginCubit,
-            )
+            BlocProvider(create: (_) => userListCubit),
+            BlocProvider.value(value: loginCubit),
           ],
           child: MaterialApp(home: const UserListView()),
         ),
@@ -296,22 +296,20 @@ void main() {
       expect(find.byType(SingleChildScrollView), findsOneWidget);
     });
     //Call correct method of cubit when tap Generate JSON
-    testWidgets('Call correct method of cubit when tap Generate JSON',
-        (tester) async {
+    testWidgets('Call correct method of cubit when tap Generate JSON', (
+      tester,
+    ) async {
       //arrange
-      when(() => userListCubit.state)
-          .thenReturn(UserListState(status: UserListStatus.success));
+      when(
+        () => userListCubit.state,
+      ).thenReturn(UserListState(status: UserListStatus.success));
       when(() => userListCubit.generateJson()).thenAnswer((_) async {});
       when(() => userListCubit.init()).thenAnswer((_) async {});
       await tester.pumpWidget(
         MultiBlocProvider(
           providers: [
-            BlocProvider(
-              create: (_) => userListCubit,
-            ),
-            BlocProvider.value(
-              value: loginCubit,
-            )
+            BlocProvider(create: (_) => userListCubit),
+            BlocProvider.value(value: loginCubit),
           ],
           child: MaterialApp(home: const UserListView()),
         ),
@@ -326,19 +324,16 @@ void main() {
     //Call correct method of cubit when tap Logout
     testWidgets('Call correct method of cubit when tap Logout', (tester) async {
       //arrange
-      when(() => userListCubit.state)
-          .thenReturn(UserListState(status: UserListStatus.success));
+      when(
+        () => userListCubit.state,
+      ).thenReturn(UserListState(status: UserListStatus.success));
       when(() => loginCubit.logout()).thenAnswer((_) async {});
       when(() => userListCubit.init()).thenAnswer((_) async {});
       await tester.pumpWidget(
         MultiBlocProvider(
           providers: [
-            BlocProvider(
-              create: (_) => userListCubit,
-            ),
-            BlocProvider.value(
-              value: loginCubit,
-            )
+            BlocProvider(create: (_) => userListCubit),
+            BlocProvider.value(value: loginCubit),
           ],
           child: MaterialApp(home: const UserListView()),
         ),
@@ -354,22 +349,21 @@ void main() {
     testWidgets('Go to login page when logout success', (tester) async {
       //arrange
       final goRouter = MockGoRouter();
-      whenListen(loginCubit,
-          Stream.value(LoginState(status: LoginStatus.logoutSuccess)));
-      when(() => userListCubit.state)
-          .thenReturn(UserListState(status: UserListStatus.success));
+      whenListen(
+        loginCubit,
+        Stream.value(LoginState(status: LoginStatus.logoutSuccess)),
+      );
+      when(
+        () => userListCubit.state,
+      ).thenReturn(UserListState(status: UserListStatus.success));
       when(() => userListCubit.init()).thenAnswer((_) async {});
       when(() => goRouter.goNamed(any())).thenAnswer((_) async {});
       //act
       await tester.pumpWidget(
         MultiBlocProvider(
           providers: [
-            BlocProvider(
-              create: (_) => userListCubit,
-            ),
-            BlocProvider.value(
-              value: loginCubit,
-            )
+            BlocProvider(create: (_) => userListCubit),
+            BlocProvider.value(value: loginCubit),
           ],
           child: MaterialApp(
             home: MockGoRouterProvider(
@@ -382,26 +376,22 @@ void main() {
       //assert
       verify(() => goRouter.goNamed('login')).called(1);
     });
-    testWidgets('Show json generation status widget above the user list',
-        (tester) async {
+    testWidgets('Show json generation status widget above the user list', (
+      tester,
+    ) async {
       //arrange
-      when(() => userListCubit.state)
-          .thenReturn(UserListState(status: UserListStatus.success));
+      when(
+        () => userListCubit.state,
+      ).thenReturn(UserListState(status: UserListStatus.success));
       when(() => userListCubit.init()).thenAnswer((_) async {});
       //act
       await tester.pumpWidget(
         MultiBlocProvider(
           providers: [
-            BlocProvider(
-              create: (_) => userListCubit,
-            ),
-            BlocProvider.value(
-              value: loginCubit,
-            )
+            BlocProvider(create: (_) => userListCubit),
+            BlocProvider.value(value: loginCubit),
           ],
-          child: MaterialApp(
-            home: const UserListView(),
-          ),
+          child: MaterialApp(home: const UserListView()),
         ),
       );
       //assert

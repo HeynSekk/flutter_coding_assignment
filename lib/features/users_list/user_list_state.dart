@@ -7,7 +7,7 @@ enum UserListStatus {
   jsonGenerateSuccess,
   failure,
   jsonGenerateFailure,
-  noInternet
+  unauthorized,
 }
 
 @JsonSerializable()
@@ -15,18 +15,22 @@ final class UserListState extends Equatable {
   const UserListState({
     this.status = UserListStatus.initial,
     this.users = const [],
+    this.message = '',
   });
 
   final UserListStatus status;
   final List<User> users;
+  final String message;
 
   UserListState copyWith({
     required UserListStatus status,
     List<User>? users,
+    String? message,
   }) {
     return UserListState(
       status: status,
       users: users ?? this.users,
+      message: message ?? this.message,
     );
   }
 
@@ -39,5 +43,6 @@ final class UserListState extends Equatable {
   List<Object?> get props => [
         status,
         users,
+        message,
       ];
 }

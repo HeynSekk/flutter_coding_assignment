@@ -26,22 +26,29 @@ class RemoteSourceApiClient {
 
   /// Fetch users [User] `/users`.
   Future<List<User>> fetchUsers() async {
-    final userRequest = Uri.https(
-      _baseUrl,
-      '/users',
-    );
+    try {
+      final userRequest = Uri.https(
+        _baseUrl,
+        '/users',
+      );
 
-    final userResponse = await _httpClient.get(userRequest);
+      // final userResponse = await _httpClient.get(userRequest);
 
-    if (userResponse.statusCode != 200) {
-      throw UserRequestFailure();
+      // This can be used for testing 401 case.
+      final userResponse = http.Response('', 401);
+
+      if (userResponse.statusCode != 200) {
+        throw ExceptionHandler.getExceptionFromResponse(userResponse);
+      }
+
+      final usersJson = jsonDecode(userResponse.body);
+
+      return (usersJson["users"] as List<dynamic>)
+          .map((e) => User.fromJson(e as Map<String, dynamic>))
+          .toList();
+    } on Exception catch (e) {
+      throw ExceptionHandler.refineException(e);
     }
-
-    final usersJson = jsonDecode(userResponse.body);
-
-    return (usersJson["users"] as List<dynamic>)
-        .map((e) => User.fromJson(e as Map<String, dynamic>))
-        .toList();
   }
 
   /// Add a new post [Post] `/post`. `id` field of `Post` is not required in
@@ -53,13 +60,14 @@ class RemoteSourceApiClient {
         '/posts/add',
       );
 
-      // final userResponse = await _httpClient.post(
-      //   uri,
-      //   body: jsonEncode(post),
-      //   headers: {'Content-Type': 'application/json'},
-      // );
+      final userResponse = await _httpClient.post(
+        uri,
+        body: jsonEncode(post),
+        headers: {'Content-Type': 'application/json'},
+      );
 
-      final userResponse = http.Response('', 401);
+      // This can be used for testing 401 case.
+      // final userResponse = http.Response('', 401);
 
       if (userResponse.statusCode != 201) {
         throw ExceptionHandler.getExceptionFromResponse(userResponse);

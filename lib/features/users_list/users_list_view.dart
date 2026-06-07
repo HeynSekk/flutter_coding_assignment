@@ -12,19 +12,18 @@ import 'package:user_repository/user_repository.dart';
 class UserListPage extends StatelessWidget {
   final UserListCubit userListCubit;
   final LoginCubit loginCubit;
-  const UserListPage(
-      {super.key, required this.userListCubit, required this.loginCubit});
+  const UserListPage({
+    super.key,
+    required this.userListCubit,
+    required this.loginCubit,
+  });
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (_) => userListCubit,
-        ),
-        BlocProvider.value(
-          value: loginCubit,
-        )
+        BlocProvider(create: (_) => userListCubit),
+        BlocProvider.value(value: loginCubit),
       ],
       child: const UserListView(),
     );
@@ -49,7 +48,7 @@ class _UserListViewState extends State<UserListView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Code Assignment'),
+        title: const Text('Users'),
         actions: [
           PopupMenuButton(
             key: const ValueKey('popupMenuButton'),
@@ -66,14 +65,8 @@ class _UserListViewState extends State<UserListView> {
               }
             },
             itemBuilder: (BuildContext context) => [
-              const PopupMenuItem<int>(
-                value: 0,
-                child: Text('Generate JSON'),
-              ),
-              const PopupMenuItem<int>(
-                value: 1,
-                child: Text('Logout'),
-              ),
+              const PopupMenuItem<int>(value: 0, child: Text('Generate JSON')),
+              const PopupMenuItem<int>(value: 1, child: Text('Logout')),
             ],
           ),
         ],
@@ -85,20 +78,29 @@ class _UserListViewState extends State<UserListView> {
             return;
           }
         },
-        child: BlocBuilder<UserListCubit, UserListState>(
+        child: BlocConsumer<UserListCubit, UserListState>(
+          listener: (context, state) => {
+            if (state.status == UserListStatus.unauthorized)
+              {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Unauthorized. Please login again.'),
+                  ),
+                ),
+              },
+          },
           builder: (context, state) {
-            if (state.status == UserListStatus.noInternet ||
-                state.status == UserListStatus.failure) {
+            if (state.status == UserListStatus.failure) {
               return Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(state.status == UserListStatus.noInternet
-                        ? 'No internet'
-                        : 'Cannot fetch users'),
-                    const SizedBox(
-                      height: 16,
+                    Text(
+                      state.message == ''
+                          ? 'Failed to fetch users'
+                          : state.message,
                     ),
+                    const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
                         context.read<UserListCubit>().fetchUsers();
@@ -110,22 +112,16 @@ class _UserListViewState extends State<UserListView> {
               );
             }
             if (state.status == UserListStatus.loading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const Center(child: CircularProgressIndicator());
             }
             return Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 16),
                   child: Column(
                     children: [
-                      JsonGenerationStatus(
-                        userListStatus: state.status,
-                      ),
+                      JsonGenerationStatus(userListStatus: state.status),
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         children: state.users
@@ -191,7 +187,11 @@ class JsonGenerationStatus extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 8),
       child: Card(
         color: const Color.fromARGB(
-            255, 249, 236, 252), // Light purple color for the card
+          255,
+          249,
+          236,
+          252,
+        ), // Light purple color for the card
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12), // Rounded corners
         ),

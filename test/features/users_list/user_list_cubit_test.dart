@@ -50,22 +50,15 @@ void main() {
               id: 1,
               address: current.Address(
                 city: 'city',
-                geo: current.Geo(
-                  lat: "1",
-                ),
+                geo: current.Geo(lat: "1"),
               ),
-              company: current.Company(
-                name: 'name',
-              ),
+              company: current.Company(name: 'name'),
             ),
           ],
         );
         final stateJson = userListCubit.toJson(sampleState);
         final stateObject = userListCubit.fromJson(stateJson);
-        expect(
-          stateObject,
-          sampleState,
-        );
+        expect(stateObject, sampleState);
       });
     });
 
@@ -85,19 +78,23 @@ void main() {
           getIt.registerSingleton<ConnectionUtil>(connectionUtil);
           //arrange for UserRepository
           userRepository = MockUserRepository();
-          when(
-            () => userRepository.getUsers(),
-          ).thenAnswer((_) async => []);
+          when(() => userRepository.getUsers()).thenAnswer((_) async => []);
           //arrange for UserListCubit
           userListCubit = UserListCubit(userRepository, jsonGenerator);
         },
         build: () => userListCubit,
         act: (cubit) => cubit.init(),
         expect: () => <dynamic>[
-          isA<UserListState>()
-              .having((s) => s.status, 'status', UserListStatus.loading),
-          isA<UserListState>()
-              .having((s) => s.status, 'status', UserListStatus.success),
+          isA<UserListState>().having(
+            (s) => s.status,
+            'status',
+            UserListStatus.loading,
+          ),
+          isA<UserListState>().having(
+            (s) => s.status,
+            'status',
+            UserListStatus.success,
+          ),
         ],
       );
       //No internet, and first time, must emit noInternet
@@ -119,8 +116,16 @@ void main() {
         build: () => userListCubit,
         act: (cubit) => cubit.init(),
         expect: () => <dynamic>[
-          isA<UserListState>()
-              .having((s) => s.status, 'status', UserListStatus.noInternet),
+          isA<UserListState>().having(
+            (s) => s.status,
+            'status',
+            UserListStatus.failure,
+          ),
+          isA<UserListState>().having(
+            (s) => s.message,
+            'message',
+            'Exception: No internet connection',
+          ),
         ],
       );
       //No internet, not the first time, must show data from local db (status must
@@ -155,7 +160,7 @@ void main() {
       });
       final users = [
         User(id: 1, address: Address(city: 'City 1')),
-        User(id: 2)
+        User(id: 2),
       ];
       //Emit success state with correct users when succeed
       blocTest<UserListCubit, UserListState>(
@@ -163,17 +168,18 @@ void main() {
         setUp: () {
           //arrange for UserRepository
           userRepository = MockUserRepository();
-          when(
-            () => userRepository.getUsers(),
-          ).thenAnswer((_) async => users);
+          when(() => userRepository.getUsers()).thenAnswer((_) async => users);
           //arrange for UserListCubit
           userListCubit = UserListCubit(userRepository, jsonGenerator);
         },
         build: () => userListCubit,
         act: (cubit) => cubit.fetchUsers(),
         expect: () => <dynamic>[
-          isA<UserListState>()
-              .having((s) => s.status, 'status', UserListStatus.loading),
+          isA<UserListState>().having(
+            (s) => s.status,
+            'status',
+            UserListStatus.loading,
+          ),
           isA<UserListState>()
               .having((s) => s.status, 'status', UserListStatus.success)
               .having((s) => s.users[0].id, 'id of second user', 1)
@@ -186,19 +192,23 @@ void main() {
         setUp: () {
           //arrange for UserRepository
           userRepository = MockUserRepository();
-          when(
-            () => userRepository.getUsers(),
-          ).thenThrow(Exception('oops'));
+          when(() => userRepository.getUsers()).thenThrow(Exception('oops'));
           //arrange for UserListCubit
           userListCubit = UserListCubit(userRepository, jsonGenerator);
         },
         build: () => userListCubit,
         act: (cubit) => cubit.fetchUsers(),
         expect: () => <dynamic>[
-          isA<UserListState>()
-              .having((s) => s.status, 'status', UserListStatus.loading),
-          isA<UserListState>()
-              .having((s) => s.status, 'status', UserListStatus.failure),
+          isA<UserListState>().having(
+            (s) => s.status,
+            'status',
+            UserListStatus.loading,
+          ),
+          isA<UserListState>().having(
+            (s) => s.status,
+            'status',
+            UserListStatus.failure,
+          ),
         ],
       );
     });
@@ -237,10 +247,16 @@ void main() {
         build: () => userListCubit,
         act: (cubit) => cubit.generateJson(),
         expect: () => <dynamic>[
-          isA<UserListState>()
-              .having((s) => s.status, 'status', UserListStatus.loading),
           isA<UserListState>().having(
-              (s) => s.status, 'status', UserListStatus.jsonGenerateSuccess),
+            (s) => s.status,
+            'status',
+            UserListStatus.loading,
+          ),
+          isA<UserListState>().having(
+            (s) => s.status,
+            'status',
+            UserListStatus.jsonGenerateSuccess,
+          ),
         ],
       );
       //Emit failure state when fail
@@ -258,10 +274,16 @@ void main() {
         build: () => userListCubit,
         act: (cubit) => cubit.generateJson(),
         expect: () => <dynamic>[
-          isA<UserListState>()
-              .having((s) => s.status, 'status', UserListStatus.loading),
           isA<UserListState>().having(
-              (s) => s.status, 'status', UserListStatus.jsonGenerateFailure),
+            (s) => s.status,
+            'status',
+            UserListStatus.loading,
+          ),
+          isA<UserListState>().having(
+            (s) => s.status,
+            'status',
+            UserListStatus.jsonGenerateFailure,
+          ),
         ],
       );
     });

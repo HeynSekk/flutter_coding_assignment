@@ -10,9 +10,7 @@ class UserDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('User Details'),
-      ),
+      appBar: AppBar(title: const Text('User Details')),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -21,20 +19,19 @@ class UserDetailPage extends StatelessWidget {
           children: [
             //user id
             InfoWidget(title: 'ID', description: user.id.toString()),
-            const SizedBox(
-              height: 16,
-            ),
+            const SizedBox(height: 16),
             //name
-            InfoWidget(title: 'Name', description: user.name ?? '<No name>'),
-            const SizedBox(
-              height: 16,
+            InfoWidget(
+              title: 'Name',
+              description: user.username ?? '<No name>',
             ),
+            const SizedBox(height: 16),
             //website
             InfoWidget(
-                title: 'Website', description: user.website ?? '<No website>'),
-            const SizedBox(
-              height: 16,
+              title: 'Website',
+              description: user.website ?? '<No website>',
             ),
+            const SizedBox(height: 16),
           ],
         ),
       ),
@@ -46,11 +43,7 @@ class InfoWidget extends StatelessWidget {
   final String title;
   final String description;
 
-  const InfoWidget({
-    super.key,
-    required this.title,
-    required this.description,
-  });
+  const InfoWidget({super.key, required this.title, required this.description});
 
   @override
   Widget build(BuildContext context) {
@@ -63,10 +56,7 @@ class InfoWidget extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
           const SizedBox(height: 8), // Space between title and description
           Text(

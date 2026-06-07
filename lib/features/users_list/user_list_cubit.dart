@@ -29,7 +29,8 @@ class UserListCubit extends HydratedCubit<UserListState> {
     }
     emit(
       state.copyWith(
-        status: UserListStatus.noInternet,
+        status: UserListStatus.failure,
+        message: 'No internet connection and no local data available.',
       ),
     );
   }
@@ -45,8 +46,15 @@ class UserListCubit extends HydratedCubit<UserListState> {
           users: users.map((e) => User.fromRepo(e)).toList(),
         ),
       );
-    } on Exception {
-      emit(state.copyWith(status: UserListStatus.failure));
+    } on Exception catch (e) {
+      // emit(state.copyWith(status: UserListStatus.failure));
+      //this case is added just for demonstration purpose.
+      if (e.toString().contains('Unauthorized')) {
+        emit(state.copyWith(status: UserListStatus.unauthorized));
+      } else {
+        emit(state.copyWith(
+            status: UserListStatus.failure, message: e.toString()));
+      }
     }
   }
 
