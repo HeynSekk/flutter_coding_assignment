@@ -32,28 +32,6 @@ void main() {
     group('addPost', () {
       final inputPost = Post(userId: 2, title: 'nice title');
       final inputPostRepo = repo.Post(userId: 2, title: 'nice title');
-      //No internet, add post, must emit noInternet.
-      blocTest<AddPostCubit, AddPostState>(
-        'No internet, add post, must emit noInternet.',
-        setUp: () {
-          //arrange for ConnectionUtil
-          connectionUtil = MockConnectionUtil();
-          when(
-            () => connectionUtil.isConnected(),
-          ).thenAnswer((_) async => false);
-          getIt.registerSingleton<ConnectionUtil>(connectionUtil);
-          //arrange for UserRepository
-          userRepository = MockUserRepository();
-          //arrange for AddPostCubit
-          addPostCubit = AddPostCubit(userRepository);
-        },
-        build: () => addPostCubit,
-        act: (cubit) => cubit.addPost(Post()),
-        expect: () => <dynamic>[
-          isA<AddPostState>()
-              .having((s) => s.status, 'status', AddPostStatus.noInternet),
-        ],
-      );
       //Make call to repo method with correct input
       blocTest<AddPostCubit, AddPostState>(
         'Make call to repo method with correct input',

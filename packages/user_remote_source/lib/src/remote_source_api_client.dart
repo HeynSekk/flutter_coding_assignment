@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:user_remote_source/src/models/post.dart';
 import 'package:user_remote_source/src/models/user.dart';
+import 'package:user_remote_source/src/utils/exception_handler.dart';
 
 /// Exception thrown when userSearch fails.
 class UserRequestFailure implements Exception {}
@@ -46,20 +47,25 @@ class RemoteSourceApiClient {
   /// Add a new post [Post] `/post`. `id` field of `Post` is not required in
   /// the input.
   Future<void> addPost(Post post) async {
-    final uri = Uri.https(
-      _baseUrl,
-      '/posts/add',
-    );
+    try {
+      final uri = Uri.https(
+        _baseUrl,
+        '/posts/add',
+      );
 
-    final userResponse = await _httpClient.post(
-      uri,
-      body: jsonEncode(post),
-      // body: jsonEncode({"userId": 22, "id": null, "title": "t", "body": "b"}),
-      headers: {'Content-Type': 'application/json'},
-    );
+      // final userResponse = await _httpClient.post(
+      //   uri,
+      //   body: jsonEncode(post),
+      //   headers: {'Content-Type': 'application/json'},
+      // );
 
-    if (userResponse.statusCode != 201) {
-      throw AddPostRequestFailure();
+      final userResponse = http.Response('', 401);
+
+      if (userResponse.statusCode != 201) {
+        throw ExceptionHandler.getExceptionFromResponse(userResponse);
+      }
+    } on Exception catch (e) {
+      throw ExceptionHandler.refineException(e);
     }
   }
 }

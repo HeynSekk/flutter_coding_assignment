@@ -33,7 +33,18 @@ class _AddPostViewState extends State<AddPostView> {
       child: AlertDialog(
         content: Padding(
           padding: const EdgeInsets.all(16),
-          child: BlocBuilder<AddPostCubit, AddPostState>(
+          child: BlocConsumer<AddPostCubit, AddPostState>(
+            listener: (context, state) => {
+              if (state.status == AddPostStatus.unauthorized)
+                {
+                  context.pop(),
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Unauthorized. Please login again.'),
+                    ),
+                  ),
+                }
+            },
             builder: (context, state) {
               if (state.status == AddPostStatus.loading) {
                 return const BoxUi(
@@ -42,17 +53,12 @@ class _AddPostViewState extends State<AddPostView> {
                   ),
                 );
               }
-              if (state.status == AddPostStatus.noInternet) {
-                return const BoxUi(
-                  child: Center(
-                    child: Text('No internet'),
-                  ),
-                );
-              }
               if (state.status == AddPostStatus.failure) {
-                return const BoxUi(
+                return BoxUi(
                   child: Center(
-                    child: Text('Cannot add post'),
+                    child: Text(state.message == ''
+                        ? 'Failed to add the post'
+                        : state.message),
                   ),
                 );
               }

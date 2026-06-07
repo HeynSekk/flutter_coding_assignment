@@ -165,8 +165,8 @@ void main() {
     });
     //Must show No internet when no internet.
     testWidgets('Must show No internet when no internet.', (tester) async {
-      when(() => addPostCubit.state)
-          .thenReturn(AddPostState(status: AddPostStatus.noInternet));
+      when(() => addPostCubit.state).thenReturn(AddPostState(
+          status: AddPostStatus.failure, message: 'No internet connection'));
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
