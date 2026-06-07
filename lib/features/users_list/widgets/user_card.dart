@@ -24,7 +24,7 @@ class UserInfoCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              user.name ?? '<No name>',
+              user.username ?? '<No name>',
               style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,

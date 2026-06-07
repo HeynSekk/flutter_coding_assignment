@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:cr_file_saver/file_saver.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../models/user.dart';
@@ -26,7 +25,7 @@ class JsonGenerator {
     String filePath = '${filesDir.path}/user.json';
     File file = File(filePath);
     await file.writeAsString(usersStr);
-    await CRFileSaver.requestWriteExternalStoragePermission();
-    await CRFileSaver.saveFile(filePath, destinationFileName: 'user.json');
+    // await CRFileSaver.requestWriteExternalStoragePermission();
+    // await CRFileSaver.saveFile(filePath, destinationFileName: 'user.json');
   }
 }

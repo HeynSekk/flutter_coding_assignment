@@ -25,6 +25,7 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+  Map<String, dynamic> toJson() => _$UserToJson(this);
 }
 
 @JsonSerializable()
@@ -45,6 +46,7 @@ class Address {
 
   factory Address.fromJson(Map<String, dynamic> json) =>
       _$AddressFromJson(json);
+  Map<String, dynamic> toJson() => _$AddressToJson(this);
 }
 
 @JsonSerializable()
@@ -58,6 +60,7 @@ class Geo {
   });
 
   factory Geo.fromJson(Map<String, dynamic> json) => _$GeoFromJson(json);
+  Map<String, dynamic> toJson() => _$GeoToJson(this);
 }
 
 @JsonSerializable()
@@ -74,4 +77,5 @@ class Company {
 
   factory Company.fromJson(Map<String, dynamic> json) =>
       _$CompanyFromJson(json);
+  Map<String, dynamic> toJson() => _$CompanyToJson(this);
 }

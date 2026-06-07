@@ -32,6 +32,17 @@ User _$UserFromJson(Map<String, dynamic> json) => $checkedCreate(
       },
     );
 
+Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'username': instance.username,
+      'email': instance.email,
+      'address': instance.address?.toJson(),
+      'phone': instance.phone,
+      'website': instance.website,
+      'company': instance.company?.toJson(),
+    };
+
 Address _$AddressFromJson(Map<String, dynamic> json) => $checkedCreate(
       'Address',
       json,
@@ -50,6 +61,14 @@ Address _$AddressFromJson(Map<String, dynamic> json) => $checkedCreate(
       },
     );
 
+Map<String, dynamic> _$AddressToJson(Address instance) => <String, dynamic>{
+      'street': instance.street,
+      'suite': instance.suite,
+      'city': instance.city,
+      'zipcode': instance.zipcode,
+      'geo': instance.geo?.toJson(),
+    };
+
 Geo _$GeoFromJson(Map<String, dynamic> json) => $checkedCreate(
       'Geo',
       json,
@@ -62,16 +81,26 @@ Geo _$GeoFromJson(Map<String, dynamic> json) => $checkedCreate(
       },
     );
 
+Map<String, dynamic> _$GeoToJson(Geo instance) => <String, dynamic>{
+      'lat': instance.lat,
+      'lng': instance.lng,
+    };
+
 Company _$CompanyFromJson(Map<String, dynamic> json) => $checkedCreate(
       'Company',
       json,
       ($checkedConvert) {
         final val = Company(
           name: $checkedConvert('name', (v) => v as String?),
-          catchPhrase: $checkedConvert('catch_phrase', (v) => v as String?),
+          catchPhrase: $checkedConvert('catchPhrase', (v) => v as String?),
           bs: $checkedConvert('bs', (v) => v as String?),
         );
         return val;
       },
-      fieldKeyMap: const {'catchPhrase': 'catch_phrase'},
     );
+
+Map<String, dynamic> _$CompanyToJson(Company instance) => <String, dynamic>{
+      'name': instance.name,
+      'catchPhrase': instance.catchPhrase,
+      'bs': instance.bs,
+    };

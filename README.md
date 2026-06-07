@@ -14,11 +14,11 @@ Essentially how to architect a nice Flutter project which is clean enough to red
 
 ## Features
 - Firebase Authentication using email/password.
-- Fetch the users from https://jsonplaceholder.typicode.com/users using GET method and
+- Fetch the users from https://dummyjson.com/users using GET method and
 insert into local database.
 - Retrieve and display the list of users from the database.
 - User details screen for displaying individual user information.
-- Upload ‘Post Model’ data to https://jsonplaceholder.typicode.com/posts using POST method.
+- Upload ‘Post Model’ data to https://dummyjson.com/posts/add/ using POST method.
 - Function which converts the user data from database into ‘user.json’ file and save
 it under Downloads folder of the mobile device.
 

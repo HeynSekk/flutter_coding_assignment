@@ -12,7 +12,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: UserInfoCard(
-            user: User(id: 1, name: 'User 1', email: 'user1@example.com'),
+            user: User(id: 1, username: 'User 1', email: 'user1@example.com'),
           ),
         ),
       );

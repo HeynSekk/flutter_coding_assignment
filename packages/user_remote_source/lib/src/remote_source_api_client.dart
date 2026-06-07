@@ -12,14 +12,14 @@ class UserRequestFailure implements Exception {}
 class AddPostRequestFailure implements Exception {}
 
 /// {@template remote_source_api_client}
-/// Dart API Client which wraps the [JSON Placeholder API](https://jsonplaceholder.typicode.com).
+/// Dart API Client which wraps the [JSON Placeholder API](https://dummyjson.com/).
 /// {@endtemplate}
 class RemoteSourceApiClient {
   /// {@macro open_meteo_api_client}
   RemoteSourceApiClient({http.Client? httpClient})
       : _httpClient = httpClient ?? http.Client();
 
-  static const _baseUrl = 'jsonplaceholder.typicode.com';
+  static const _baseUrl = 'dummyjson.com';
 
   final http.Client _httpClient;
 
@@ -36,9 +36,9 @@ class RemoteSourceApiClient {
       throw UserRequestFailure();
     }
 
-    final usersJson = jsonDecode(userResponse.body) as List<dynamic>;
+    final usersJson = jsonDecode(userResponse.body);
 
-    return usersJson
+    return (usersJson["users"] as List<dynamic>)
         .map((e) => User.fromJson(e as Map<String, dynamic>))
         .toList();
   }
@@ -48,12 +48,14 @@ class RemoteSourceApiClient {
   Future<void> addPost(Post post) async {
     final uri = Uri.https(
       _baseUrl,
-      '/posts',
+      '/posts/add',
     );
 
     final userResponse = await _httpClient.post(
       uri,
       body: jsonEncode(post),
+      // body: jsonEncode({"userId": 22, "id": null, "title": "t", "body": "b"}),
+      headers: {'Content-Type': 'application/json'},
     );
 
     if (userResponse.statusCode != 201) {

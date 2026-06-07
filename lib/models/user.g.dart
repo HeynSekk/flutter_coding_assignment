@@ -92,16 +92,15 @@ Company _$CompanyFromJson(Map<String, dynamic> json) => $checkedCreate(
       ($checkedConvert) {
         final val = Company(
           name: $checkedConvert('name', (v) => v as String?),
-          catchPhrase: $checkedConvert('catch_phrase', (v) => v as String?),
+          catchPhrase: $checkedConvert('catchPhrase', (v) => v as String?),
           bs: $checkedConvert('bs', (v) => v as String?),
         );
         return val;
       },
-      fieldKeyMap: const {'catchPhrase': 'catch_phrase'},
     );
 
 Map<String, dynamic> _$CompanyToJson(Company instance) => <String, dynamic>{
       'name': instance.name,
-      'catch_phrase': instance.catchPhrase,
+      'catchPhrase': instance.catchPhrase,
       'bs': instance.bs,
     };

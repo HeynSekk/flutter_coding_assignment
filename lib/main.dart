@@ -15,7 +15,8 @@ Future<void> main() async {
   getIt.allowReassignment = true;
   setupLocator();
   HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory: await getTemporaryDirectory(),
+    storageDirectory:
+        HydratedStorageDirectory((await getTemporaryDirectory()).path),
   );
   runApp(const MyApp());
 }
