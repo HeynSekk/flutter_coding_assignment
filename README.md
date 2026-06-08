@@ -43,7 +43,7 @@ In the future, I would add demonstrations for responsive design, design system, 
 - Local storage: hydrated_bloc,
 
 ## How to run the project?
-Since it use Firebase auth, you need a Firebase project and connect this project to it. Follow these steps to add Firebase https://firebase.google.com/docs/flutter/setup?platform=android . Enable email/password Authentication at Firebase console, create a sample account for testing.
+Since it use Firebase auth, you need a Firebase project and connect this project to it. Follow these steps to add Firebase https://firebase.google.com/docs/flutter/setup?platform=android . Ensure `google-services.json` is in `android/app/`. Enable email/password Authentication at Firebase console, create a sample account for testing.
 
 - We can run the app by running `flutter pub get`, `flutter run`.
 - Run `flutter test` or use GUI of IDEs like VS Code to run tests.

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_sample_app/features/login/auth.dart';
 import 'package:flutter_sample_app/main.dart';
 import 'package:flutter_sample_app/util/connection_util.dart';
@@ -19,29 +20,51 @@ class LoginCubit extends Cubit<LoginState> {
         return;
       }
       emit(state.copyWith(status: LoginStatus.initial));
-    } catch (e) {
-      emit(state.copyWith(status: LoginStatus.authCheckFailure));
+    } on Exception catch (e) {
+      if (e is FirebaseAuthException) {
+        // we can handle error codes and create more good-UX error messages
+        // here. For now, we just pass the error message from Firebase.
+        emit(
+          state.copyWith(
+            status: LoginStatus.failure,
+            message: 'Authentication failed. Code: ${e.code}',
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(status: LoginStatus.failure, message: e.toString()),
+        );
+      }
     }
   }
 
   Future<void> login({required String email, required String password}) async {
-    final isConnected = await getIt<ConnectionUtil>().isConnected();
-    if (!isConnected) {
-      emit(state.copyWith(status: LoginStatus.noInternet));
-      return;
-    }
+    // final isConnected = await getIt<ConnectionUtil>().isConnected();
+    // if (!isConnected) {
+    //   emit(state.copyWith(status: LoginStatus.noInternet));
+    //   return;
+    // }
 
     emit(state.copyWith(status: LoginStatus.loading));
 
     try {
       await _auth.login(email: email, password: password);
-      emit(
-        state.copyWith(
-          status: LoginStatus.success,
-        ),
-      );
-    } on Exception {
-      emit(state.copyWith(status: LoginStatus.failure));
+      emit(state.copyWith(status: LoginStatus.success));
+    } on Exception catch (e) {
+      if (e is FirebaseAuthException) {
+        // we can handle error codes and create more good-UX error messages
+        // here. For now, we just pass the error message from Firebase.
+        emit(
+          state.copyWith(
+            status: LoginStatus.failure,
+            message: 'Authentication failed. Code: ${e.code}',
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(status: LoginStatus.failure, message: e.toString()),
+        );
+      }
     }
   }
 
@@ -49,11 +72,22 @@ class LoginCubit extends Cubit<LoginState> {
     emit(state.copyWith(status: LoginStatus.loading));
     try {
       await _auth.logout();
-      emit(state.copyWith(
-        status: LoginStatus.logoutSuccess,
-      ));
-    } catch (e) {
-      emit(state.copyWith(status: LoginStatus.failure));
+      emit(state.copyWith(status: LoginStatus.logoutSuccess));
+    } on Exception catch (e) {
+      if (e is FirebaseAuthException) {
+        // we can handle error codes and create more good-UX error messages
+        // here. For now, we just pass the error message from Firebase.
+        emit(
+          state.copyWith(
+            status: LoginStatus.failure,
+            message: 'Authentication failed. Code: ${e.code}',
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(status: LoginStatus.failure, message: e.toString()),
+        );
+      }
     }
   }
 }

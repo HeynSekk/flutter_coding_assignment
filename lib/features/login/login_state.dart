@@ -12,22 +12,15 @@ enum LoginStatus {
 }
 
 final class LoginState extends Equatable {
-  const LoginState({
-    this.status = LoginStatus.loading,
-  });
+  const LoginState({this.status = LoginStatus.loading, this.message = ''});
 
   final LoginStatus status;
+  final String message;
 
-  LoginState copyWith({
-    required LoginStatus status,
-  }) {
-    return LoginState(
-      status: status,
-    );
+  LoginState copyWith({required LoginStatus status, String? message}) {
+    return LoginState(status: status, message: message ?? this.message);
   }
 
   @override
-  List<Object?> get props => [
-        status,
-      ];
+  List<Object?> get props => [status, message];
 }

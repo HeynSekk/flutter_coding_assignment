@@ -10,10 +10,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: loginCubit,
-      child: const LoginView(),
-    );
+    return BlocProvider.value(value: loginCubit, child: const LoginView());
   }
 }
 
@@ -64,9 +61,9 @@ class _LoginViewState extends State<LoginView> {
                     state.status == LoginStatus.alreadyLogin) {
                   return const CircularProgressIndicator();
                 }
-                if (state.status == LoginStatus.noInternet) {
-                  return const Text('No internet');
-                }
+                // if (state.status == LoginStatus.noInternet) {
+                //   return const Text('No internet');
+                // }
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -75,34 +72,32 @@ class _LoginViewState extends State<LoginView> {
                       label: 'Enter email',
                       textFieldKey: 'email',
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
+                    const SizedBox(height: 8),
                     MyTextField(
                       tec: pwdTec,
                       label: 'Enter password',
                       textFieldKey: 'pwd',
                       obscureText: true,
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
+                    const SizedBox(height: 8),
                     ElevatedButton(
                       onPressed: () {
                         context.read<LoginCubit>().login(
-                              email: emailTec.text,
-                              password: pwdTec.text,
-                            );
+                          email: emailTec.text,
+                          password: pwdTec.text,
+                        );
                       },
                       child: const Text('Login'),
                     ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    Text(
-                      _getMessage(state.status),
-                      style: const TextStyle(color: Colors.red),
-                    ),
+                    const SizedBox(height: 16),
+                    if (state.status == LoginStatus.failure ||
+                        state.status == LoginStatus.authCheckFailure)
+                      Text(
+                        state.message.isEmpty
+                            ? 'Login failed. Please try again.'
+                            : state.message,
+                        style: const TextStyle(color: Colors.red),
+                      ),
                   ],
                 );
               },
@@ -111,15 +106,5 @@ class _LoginViewState extends State<LoginView> {
         ),
       ),
     );
-  }
-
-  String _getMessage(LoginStatus loginStatus) {
-    if (loginStatus == LoginStatus.failure) {
-      return 'Cannot login';
-    }
-    if (loginStatus == LoginStatus.authCheckFailure) {
-      return 'You need to login';
-    }
-    return '';
   }
 }

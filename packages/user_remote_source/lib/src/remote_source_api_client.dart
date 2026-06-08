@@ -32,10 +32,10 @@ class RemoteSourceApiClient {
         '/users',
       );
 
-      // final userResponse = await _httpClient.get(userRequest);
+      final userResponse = await _httpClient.get(userRequest);
 
       // This can be used for testing 401 case.
-      final userResponse = http.Response('', 401);
+      // final userResponse = http.Response('', 401);
 
       if (userResponse.statusCode != 200) {
         throw ExceptionHandler.getExceptionFromResponse(userResponse);
