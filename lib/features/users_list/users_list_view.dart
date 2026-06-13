@@ -121,7 +121,7 @@ class _UserListViewState extends State<UserListView> {
                   padding: const EdgeInsets.only(top: 16),
                   child: Column(
                     children: [
-                      JsonGenerationStatus(userListStatus: state.status),
+                      JsonGenerationStatus(userListState: state),
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         children: state.users
@@ -164,14 +164,16 @@ class _UserListViewState extends State<UserListView> {
 }
 
 class JsonGenerationStatus extends StatelessWidget {
-  const JsonGenerationStatus({super.key, required this.userListStatus});
-  final UserListStatus userListStatus;
+  const JsonGenerationStatus({super.key, required this.userListState});
+  final UserListState userListState;
 
-  String _getMessage(UserListStatus userListStatus) {
-    if (userListStatus == UserListStatus.jsonGenerateFailure) {
-      return "Json Generation Failed!";
+  String _getMessage(UserListState userListState) {
+    if (userListState.status == UserListStatus.jsonGenerateFailure) {
+      return userListState.message == ''
+          ? 'Failed to generate JSON file'
+          : userListState.message;
     }
-    if (userListStatus == UserListStatus.jsonGenerateSuccess) {
+    if (userListState.status == UserListStatus.jsonGenerateSuccess) {
       return "Json Generation Succeeded!";
     }
     return '';
@@ -179,8 +181,8 @@ class JsonGenerationStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!(userListStatus == UserListStatus.jsonGenerateFailure ||
-        userListStatus == UserListStatus.jsonGenerateSuccess)) {
+    if (!(userListState.status == UserListStatus.jsonGenerateFailure ||
+        userListState.status == UserListStatus.jsonGenerateSuccess)) {
       return Container();
     }
     return Padding(
@@ -199,10 +201,10 @@ class JsonGenerationStatus extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            _getMessage(userListStatus),
+            _getMessage(userListState),
             style: TextStyle(
               fontSize: 16,
-              color: userListStatus == UserListStatus.jsonGenerateSuccess
+              color: userListState.status == UserListStatus.jsonGenerateSuccess
                   ? Colors.black
                   : Colors.red,
             ),

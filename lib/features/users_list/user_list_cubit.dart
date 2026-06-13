@@ -13,7 +13,7 @@ part 'user_list_state.dart';
 
 class UserListCubit extends HydratedCubit<UserListState> {
   UserListCubit(this._userRepository, this._jsonGenerator)
-      : super(const UserListState());
+    : super(const UserListState());
   final repo.UserRepository _userRepository;
   final JsonGenerator _jsonGenerator;
 
@@ -52,8 +52,9 @@ class UserListCubit extends HydratedCubit<UserListState> {
       if (e.toString().contains('Unauthorized')) {
         emit(state.copyWith(status: UserListStatus.unauthorized));
       } else {
-        emit(state.copyWith(
-            status: UserListStatus.failure, message: e.toString()));
+        emit(
+          state.copyWith(status: UserListStatus.failure, message: e.toString()),
+        );
       }
     }
   }
@@ -63,13 +64,14 @@ class UserListCubit extends HydratedCubit<UserListState> {
 
     try {
       await _jsonGenerator.generateJson(state.users);
+      emit(state.copyWith(status: UserListStatus.jsonGenerateSuccess));
+    } on Exception catch (e) {
       emit(
         state.copyWith(
-          status: UserListStatus.jsonGenerateSuccess,
+          status: UserListStatus.jsonGenerateFailure,
+          message: e.toString(),
         ),
       );
-    } on Exception {
-      emit(state.copyWith(status: UserListStatus.jsonGenerateFailure));
     }
   }
 

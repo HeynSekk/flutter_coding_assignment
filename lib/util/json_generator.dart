@@ -1,31 +1,32 @@
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:path_provider/path_provider.dart';
+import 'package:simple_file_saver/simple_file_saver.dart';
 
 import '../models/user.dart';
 
 //TODO add tests
 class JsonGenerator {
+  /// Generate a json ans save it.
+  /// Returns an exception if something went wrong. We can handle different
+  /// failure cases here. But for simplicity, we will just return
+  /// the exception and handle it in the cubit.
   Future<void> generateJson(List<User> users) async {
-    final List<Map<String, dynamic>> usersMap =
-        users.map((e) => e.toJson()).toList();
-    final String usersStr = jsonEncode(usersMap);
-    // Get the application documents directory
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    String appDocPath = appDocDir.path;
-
-    // Create the '/files' folder if it doesn't exist
-    Directory filesDir = Directory('$appDocPath/files');
-    if (!await filesDir.exists()) {
-      await filesDir.create(recursive: true);
+    try {
+      final List<Map<String, dynamic>> usersMap = users
+          .map((e) => e.toJson())
+          .toList();
+      final String usersStr = jsonEncode(usersMap);
+      await SimpleFileSaver.saveFile(
+        fileInfo: FileSaveInfo.fromBytes(
+          bytes: utf8.encode(usersStr),
+          basename: 'file_save',
+          extension: 'txt',
+        ),
+      );
+    } on Exception {
+      throw Exception(
+        'Failed to generate and save JSON file. Please check if you have enough storage space.',
+      );
     }
-
-    // Create the file path
-    String filePath = '${filesDir.path}/user.json';
-    File file = File(filePath);
-    await file.writeAsString(usersStr);
-    // await CRFileSaver.requestWriteExternalStoragePermission();
-    // await CRFileSaver.saveFile(filePath, destinationFileName: 'user.json');
   }
 }
