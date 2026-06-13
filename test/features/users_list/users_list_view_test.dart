@@ -116,8 +116,18 @@ void main() {
         UserListState(
           status: UserListStatus.success,
           users: const [
-            User(id: 1, name: 'John', email: 'john@example.com'),
-            User(id: 1, name: 'Alice', email: 'alice@example.com'),
+            User(
+              id: 1,
+              name: 'John',
+              username: 'john_nick',
+              email: 'john@example.com',
+            ),
+            User(
+              id: 2,
+              name: 'Alice',
+              username: 'alice_nick',
+              email: 'alice@example.com',
+            ),
           ],
         ),
       );
@@ -131,9 +141,9 @@ void main() {
           child: MaterialApp(home: const UserListView()),
         ),
       );
-      expect(find.text('John'), findsOneWidget);
+      expect(find.text('john_nick'), findsOneWidget);
       expect(find.text('john@example.com'), findsOneWidget);
-      expect(find.text('Alice'), findsOneWidget);
+      expect(find.text('alice_nick'), findsOneWidget);
       expect(find.text('alice@example.com'), findsOneWidget);
     });
     //Get to user detail page when tap user card.
@@ -148,8 +158,18 @@ void main() {
           UserListState(
             status: UserListStatus.success,
             users: const [
-              User(id: 1, name: 'John', email: 'john@example.com'),
-              User(id: 1, name: 'Alice', email: 'alice@example.com'),
+              User(
+                id: 1,
+                name: 'John',
+                username: 'john_nick',
+                email: 'john@example.com',
+              ),
+              User(
+                id: 2,
+                name: 'Alice',
+                username: 'alice_nick',
+                email: 'alice@example.com',
+              ),
             ],
           ),
         );
@@ -172,7 +192,12 @@ void main() {
         verify(
           () => goRouter.pushNamed(
             'user-detail',
-            extra: User(id: 1, name: 'John', email: 'john@example.com'),
+            extra: User(
+              id: 1,
+              name: 'John',
+              username: 'john_nick',
+              email: 'john@example.com',
+            ),
           ),
         ).called(1);
       },

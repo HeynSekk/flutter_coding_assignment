@@ -12,12 +12,29 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: UserInfoCard(
-            user: User(id: 1, name: 'User 1', email: 'user1@example.com'),
+            user: User(
+              id: 1,
+              name: 'User 1',
+              username: 'user1_nick',
+              email: 'user1@example.com',
+            ),
           ),
         ),
       );
-      expect(find.text('User 1'), findsOneWidget);
+      expect(find.text('user1_nick'), findsOneWidget);
       expect(find.text('user1@example.com'), findsOneWidget);
+    });
+
+    testWidgets('Must show fallback text when data is missing', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: UserInfoCard(
+            user: User(id: 1),
+          ),
+        ),
+      );
+      expect(find.text('<No name>'), findsOneWidget);
+      expect(find.text('<No email>'), findsOneWidget);
     });
   });
 }

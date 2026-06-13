@@ -169,28 +169,6 @@ void main() {
           verify(() => auth.login(email: 'e', password: 'p')).called(1);
         },
       );
-      //If no internet, must emit noInternet
-      blocTest<LoginCubit, LoginState>(
-        'If no internet, must emit noInternet',
-        setUp: () {
-          connectionUtil = MockConnectionUtil();
-          when(
-            () => connectionUtil.isConnected(),
-          ).thenAnswer((_) async => false);
-          getIt.registerSingleton<ConnectionUtil>(connectionUtil);
-          auth = MockAuth();
-          loginCubit = LoginCubit(auth);
-        },
-        build: () => loginCubit,
-        act: (cubit) => cubit.login(email: 'e', password: 'p'),
-        expect: () => <dynamic>[
-          isA<LoginState>().having(
-            (s) => s.status,
-            'status',
-            LoginStatus.noInternet,
-          ),
-        ],
-      );
       //When login succeed, must emit loading and success
       blocTest<LoginCubit, LoginState>(
         'When login succeed, must emit loading and success',

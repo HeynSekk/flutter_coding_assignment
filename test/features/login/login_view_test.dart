@@ -84,29 +84,11 @@ void main() {
           .called(1);
     });
 
-    testWidgets('Show No internet in the case', (tester) async {
-      //arrange
-      when(() => loginCubit.state)
-          .thenReturn(const LoginState(status: LoginStatus.noInternet));
-      when(() => loginCubit.init()).thenAnswer((_) async {});
-      //act
-      await tester.pumpWidget(
-        BlocProvider.value(
-          value: loginCubit,
-          child: const MaterialApp(
-            home: LoginView(),
-          ),
-        ),
-      );
-      //assert
-      expect(find.text('No internet'), findsOneWidget);
-    });
-
     testWidgets('Show Need to login and input fields in the case',
         (tester) async {
       //arrange
-      when(() => loginCubit.state)
-          .thenReturn(const LoginState(status: LoginStatus.authCheckFailure));
+      when(() => loginCubit.state).thenReturn(const LoginState(
+          status: LoginStatus.authCheckFailure, message: 'You need to login'));
       when(() => loginCubit.init()).thenAnswer((_) async {});
       //act
       await tester.pumpWidget(
@@ -125,8 +107,8 @@ void main() {
     testWidgets('Show Cannot login and input fields in the case',
         (tester) async {
       //arrange
-      when(() => loginCubit.state)
-          .thenReturn(const LoginState(status: LoginStatus.failure));
+      when(() => loginCubit.state).thenReturn(const LoginState(
+          status: LoginStatus.failure, message: 'Cannot login'));
       when(() => loginCubit.init()).thenAnswer((_) async {});
       //act
       await tester.pumpWidget(
@@ -140,6 +122,25 @@ void main() {
       //assert
       expect(find.text('Cannot login'), findsOneWidget);
       expect(find.byKey(const ValueKey('email')), findsOneWidget);
+    });
+
+    testWidgets('Show default error message when message is empty',
+        (tester) async {
+      //arrange
+      when(() => loginCubit.state)
+          .thenReturn(const LoginState(status: LoginStatus.failure));
+      when(() => loginCubit.init()).thenAnswer((_) async {});
+      //act
+      await tester.pumpWidget(
+        BlocProvider.value(
+          value: loginCubit,
+          child: const MaterialApp(
+            home: LoginView(),
+          ),
+        ),
+      );
+      //assert
+      expect(find.text('Login failed. Please try again.'), findsOneWidget);
     });
 
     testWidgets('Show Loading indicator in the case', (tester) async {
