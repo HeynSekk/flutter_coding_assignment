@@ -57,7 +57,7 @@ class _AddPostViewState extends State<AddPostView> {
                 return BoxUi(
                   child: Center(
                     child: Text(state.message == ''
-                        ? 'Failed to add the post'
+                        ? 'Cannot add post'
                         : state.message),
                   ),
                 );

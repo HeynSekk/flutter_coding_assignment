@@ -97,7 +97,7 @@ class _UserListViewState extends State<UserListView> {
                   children: [
                     Text(
                       state.message == ''
-                          ? 'Failed to fetch users'
+                          ? 'Cannot fetch users'
                           : state.message,
                     ),
                     const SizedBox(height: 16),

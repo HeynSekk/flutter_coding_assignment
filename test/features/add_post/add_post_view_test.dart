@@ -178,7 +178,7 @@ void main() {
           ),
         ),
       );
-      expect(find.text('No internet'), findsOneWidget);
+      expect(find.text('No internet connection'), findsOneWidget);
     });
   });
 }

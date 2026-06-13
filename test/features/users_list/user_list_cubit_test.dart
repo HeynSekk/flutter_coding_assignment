@@ -116,16 +116,13 @@ void main() {
         build: () => userListCubit,
         act: (cubit) => cubit.init(),
         expect: () => <dynamic>[
-          isA<UserListState>().having(
-            (s) => s.status,
-            'status',
-            UserListStatus.failure,
-          ),
-          isA<UserListState>().having(
-            (s) => s.message,
-            'message',
-            'Exception: No internet connection',
-          ),
+          isA<UserListState>()
+              .having((s) => s.status, 'status', UserListStatus.failure)
+              .having(
+                (s) => s.message,
+                'message',
+                'No internet connection and no local data available.',
+              ),
         ],
       );
       //No internet, not the first time, must show data from local db (status must

@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:bloc_test/bloc_test.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_sample_app/features/login/auth.dart';
 import 'package:flutter_sample_app/features/login/login_cubit.dart';
 import 'package:flutter_sample_app/util/connection_util.dart';
@@ -30,9 +31,7 @@ void main() {
         'Must call isAuthenticated function of the service',
         setUp: () {
           auth = MockAuth();
-          when(
-            () => auth.isAuthenticated(),
-          ).thenAnswer((_) async => true);
+          when(() => auth.isAuthenticated()).thenAnswer((_) async => true);
           loginCubit = LoginCubit(auth);
         },
         build: () => loginCubit,
@@ -46,18 +45,22 @@ void main() {
         'Already login, must emit alreadyLogin',
         setUp: () {
           auth = MockAuth();
-          when(
-            () => auth.isAuthenticated(),
-          ).thenAnswer((_) async => true);
+          when(() => auth.isAuthenticated()).thenAnswer((_) async => true);
           loginCubit = LoginCubit(auth);
         },
         build: () => loginCubit,
         act: (cubit) => cubit.init(),
         expect: () => <dynamic>[
-          isA<LoginState>()
-              .having((s) => s.status, 'status', LoginStatus.loading),
-          isA<LoginState>()
-              .having((s) => s.status, 'status', LoginStatus.alreadyLogin),
+          isA<LoginState>().having(
+            (s) => s.status,
+            'status',
+            LoginStatus.loading,
+          ),
+          isA<LoginState>().having(
+            (s) => s.status,
+            'status',
+            LoginStatus.alreadyLogin,
+          ),
         ],
       );
       //Not already login, must emit initial
@@ -65,37 +68,75 @@ void main() {
         'Not already login, must emit initial',
         setUp: () {
           auth = MockAuth();
-          when(
-            () => auth.isAuthenticated(),
-          ).thenAnswer((_) async => false);
+          when(() => auth.isAuthenticated()).thenAnswer((_) async => false);
           loginCubit = LoginCubit(auth);
         },
         build: () => loginCubit,
         act: (cubit) => cubit.init(),
         expect: () => <dynamic>[
-          isA<LoginState>()
-              .having((s) => s.status, 'status', LoginStatus.loading),
-          isA<LoginState>()
-              .having((s) => s.status, 'status', LoginStatus.initial),
+          isA<LoginState>().having(
+            (s) => s.status,
+            'status',
+            LoginStatus.loading,
+          ),
+          isA<LoginState>().having(
+            (s) => s.status,
+            'status',
+            LoginStatus.initial,
+          ),
         ],
       );
       //When auth check failed, must emit authCheckFailure
       blocTest<LoginCubit, LoginState>(
-        'When auth check failed, must emit authCheckFailure',
+        'When auth check failed due to firebase, emit Failure with correct message',
         setUp: () {
           auth = MockAuth();
           when(
             () => auth.isAuthenticated(),
-          ).thenThrow(Exception('oopps'));
+          ).thenThrow(FirebaseAuthException(code: 'fb error'));
           loginCubit = LoginCubit(auth);
         },
         build: () => loginCubit,
         act: (cubit) => cubit.init(),
         expect: () => <dynamic>[
+          isA<LoginState>().having(
+            (s) => s.status,
+            'status',
+            LoginStatus.loading,
+          ),
           isA<LoginState>()
-              .having((s) => s.status, 'status', LoginStatus.loading),
+              .having((s) => s.status, 'status', LoginStatus.failure)
+              .having(
+                (s) => s.message,
+                'message',
+                'Authentication failed. Code: fb error',
+              ),
+        ],
+      );
+      blocTest<LoginCubit, LoginState>(
+        'When auth check failed due to general cause, emit Failure with correct message',
+        setUp: () {
+          auth = MockAuth();
+          when(
+            () => auth.isAuthenticated(),
+          ).thenThrow(Exception('general error'));
+          loginCubit = LoginCubit(auth);
+        },
+        build: () => loginCubit,
+        act: (cubit) => cubit.init(),
+        expect: () => <dynamic>[
+          isA<LoginState>().having(
+            (s) => s.status,
+            'status',
+            LoginStatus.loading,
+          ),
           isA<LoginState>()
-              .having((s) => s.status, 'status', LoginStatus.authCheckFailure),
+              .having((s) => s.status, 'status', LoginStatus.failure)
+              .having(
+                (s) => s.message,
+                'message',
+                Exception('general error').toString(),
+              ),
         ],
       );
     });
@@ -116,8 +157,10 @@ void main() {
           auth = MockAuth();
           when(
             () => auth.login(
-                email: any(named: 'email'), password: any(named: 'password')),
-          ).thenAnswer((_) async => {});
+              email: any(named: 'email'),
+              password: any(named: 'password'),
+            ),
+          ).thenAnswer((_) async {});
           loginCubit = LoginCubit(auth);
         },
         build: () => loginCubit,
@@ -141,8 +184,11 @@ void main() {
         build: () => loginCubit,
         act: (cubit) => cubit.login(email: 'e', password: 'p'),
         expect: () => <dynamic>[
-          isA<LoginState>()
-              .having((s) => s.status, 'status', LoginStatus.noInternet),
+          isA<LoginState>().having(
+            (s) => s.status,
+            'status',
+            LoginStatus.noInternet,
+          ),
         ],
       );
       //When login succeed, must emit loading and success
@@ -157,17 +203,25 @@ void main() {
           auth = MockAuth();
           when(
             () => auth.login(
-                email: any(named: 'email'), password: any(named: 'password')),
-          ).thenAnswer((_) async => {});
+              email: any(named: 'email'),
+              password: any(named: 'password'),
+            ),
+          ).thenAnswer((_) async {});
           loginCubit = LoginCubit(auth);
         },
         build: () => loginCubit,
         act: (cubit) => cubit.login(email: 'e', password: 'p'),
         expect: () => <dynamic>[
-          isA<LoginState>()
-              .having((s) => s.status, 'status', LoginStatus.loading),
-          isA<LoginState>()
-              .having((s) => s.status, 'status', LoginStatus.success),
+          isA<LoginState>().having(
+            (s) => s.status,
+            'status',
+            LoginStatus.loading,
+          ),
+          isA<LoginState>().having(
+            (s) => s.status,
+            'status',
+            LoginStatus.success,
+          ),
         ],
       );
       //When login fail, must emit loading and failure
@@ -182,17 +236,25 @@ void main() {
           auth = MockAuth();
           when(
             () => auth.login(
-                email: any(named: 'email'), password: any(named: 'password')),
+              email: any(named: 'email'),
+              password: any(named: 'password'),
+            ),
           ).thenThrow(Exception('opps'));
           loginCubit = LoginCubit(auth);
         },
         build: () => loginCubit,
         act: (cubit) => cubit.login(email: 'e', password: 'p'),
         expect: () => <dynamic>[
-          isA<LoginState>()
-              .having((s) => s.status, 'status', LoginStatus.loading),
-          isA<LoginState>()
-              .having((s) => s.status, 'status', LoginStatus.failure),
+          isA<LoginState>().having(
+            (s) => s.status,
+            'status',
+            LoginStatus.loading,
+          ),
+          isA<LoginState>().having(
+            (s) => s.status,
+            'status',
+            LoginStatus.failure,
+          ),
         ],
       );
     });
@@ -202,9 +264,7 @@ void main() {
         'Must call logout function of the service',
         setUp: () {
           auth = MockAuth();
-          when(
-            () => auth.logout(),
-          ).thenAnswer((_) async => {});
+          when(() => auth.logout()).thenAnswer((_) async {});
           loginCubit = LoginCubit(auth);
         },
         build: () => loginCubit,
@@ -218,18 +278,22 @@ void main() {
         'Success, emit loading and success',
         setUp: () {
           auth = MockAuth();
-          when(
-            () => auth.logout(),
-          ).thenAnswer((_) async {});
+          when(() => auth.logout()).thenAnswer((_) async {});
           loginCubit = LoginCubit(auth);
         },
         build: () => loginCubit,
         act: (cubit) => cubit.logout(),
         expect: () => <dynamic>[
-          isA<LoginState>()
-              .having((s) => s.status, 'status', LoginStatus.loading),
-          isA<LoginState>()
-              .having((s) => s.status, 'status', LoginStatus.logoutSuccess),
+          isA<LoginState>().having(
+            (s) => s.status,
+            'status',
+            LoginStatus.loading,
+          ),
+          isA<LoginState>().having(
+            (s) => s.status,
+            'status',
+            LoginStatus.logoutSuccess,
+          ),
         ],
       );
       //Failure, emit loading and failure
@@ -237,18 +301,22 @@ void main() {
         'Failure, emit loading and failure',
         setUp: () {
           auth = MockAuth();
-          when(
-            () => auth.logout(),
-          ).thenThrow(Exception('opps'));
+          when(() => auth.logout()).thenThrow(Exception('opps'));
           loginCubit = LoginCubit(auth);
         },
         build: () => loginCubit,
         act: (cubit) => cubit.logout(),
         expect: () => <dynamic>[
-          isA<LoginState>()
-              .having((s) => s.status, 'status', LoginStatus.loading),
-          isA<LoginState>()
-              .having((s) => s.status, 'status', LoginStatus.failure),
+          isA<LoginState>().having(
+            (s) => s.status,
+            'status',
+            LoginStatus.loading,
+          ),
+          isA<LoginState>().having(
+            (s) => s.status,
+            'status',
+            LoginStatus.failure,
+          ),
         ],
       );
     });

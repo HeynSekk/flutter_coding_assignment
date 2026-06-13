@@ -12,17 +12,21 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: JsonGenerationStatus(
-            userListStatus: UserListStatus.jsonGenerateFailure,
+            userListState: UserListState(
+              status: UserListStatus.jsonGenerateFailure,
+            ),
           ),
         ),
       );
-      expect(find.text('Json Generation Failed!'), findsOneWidget);
+      expect(find.text('Failed to generate JSON file'), findsOneWidget);
     });
     testWidgets('Show success message correctly', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: JsonGenerationStatus(
-            userListStatus: UserListStatus.jsonGenerateSuccess,
+            userListState: UserListState(
+              status: UserListStatus.jsonGenerateSuccess,
+            ),
           ),
         ),
       );
@@ -34,7 +38,9 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: JsonGenerationStatus(
-            userListStatus: UserListStatus.initial,
+            userListState: UserListState(
+              status: UserListStatus.initial,
+            ),
           ),
         ),
       );

@@ -199,7 +199,7 @@ void main() {
       when(() => userListCubit.state).thenReturn(
         UserListState(
           status: UserListStatus.failure,
-          message: 'Exception: No internet connection',
+          message: 'No internet connection',
         ),
       );
       when(() => userListCubit.init()).thenAnswer((_) async {});
@@ -212,12 +212,14 @@ void main() {
           child: MaterialApp(home: const UserListView()),
         ),
       );
-      expect(find.text('Exception: No internet connection'), findsOneWidget);
+      expect(find.text('No internet connection'), findsOneWidget);
     });
     testWidgets('Show Unauthorized snackbar when Unauthorized', (tester) async {
-      when(
-        () => userListCubit.state,
-      ).thenReturn(UserListState(status: UserListStatus.unauthorized));
+      whenListen(
+        userListCubit,
+        Stream.value(UserListState(status: UserListStatus.unauthorized)),
+        initialState: UserListState(status: UserListStatus.loading),
+      );
       when(() => userListCubit.init()).thenAnswer((_) async {});
       await tester.pumpWidget(
         MultiBlocProvider(
