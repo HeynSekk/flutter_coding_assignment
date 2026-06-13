@@ -36,7 +36,7 @@ void main() {
       test('makes correct http request', () async {
         final response = MockResponse();
         when(() => response.statusCode).thenReturn(200);
-        when(() => response.body).thenReturn('{}');
+        when(() => response.body).thenReturn('{"users": []}');
         when(() => httpClient.get(any())).thenAnswer((_) async => response);
         try {
           await apiClient.fetchUsers();
@@ -44,20 +44,20 @@ void main() {
         verify(
           () => httpClient.get(
             Uri.https(
-              'jsonplaceholder.typicode.com',
+              'dummyjson.com',
               '/users',
             ),
           ),
         ).called(1);
       });
 
-      test('throws UserRequestFailure on non-200 response', () async {
+      test('throws Exception on non-200 response', () async {
         final response = MockResponse();
         when(() => response.statusCode).thenReturn(400);
         when(() => httpClient.get(any())).thenAnswer((_) async => response);
         expect(
           () async => apiClient.fetchUsers(),
-          throwsA(isA<UserRequestFailure>()),
+          throwsA(isA<Exception>()),
         );
       });
 
@@ -66,53 +66,76 @@ void main() {
         when(() => response.statusCode).thenReturn(200);
         when(() => response.body).thenReturn(
           '''
-[
 {
-    "id": 1,
-    "name": "Leanne Graham",
-    "username": "Bret",
-    "email": "Sincere@april.biz",
-    "address": {
-      "street": "Kulas Light",
-      "suite": "Apt. 556",
-      "city": "Gwenborough",
-      "zipcode": "92998-3874",
-      "geo": {
-        "lat": "-37.3159",
-        "lng": "81.1496"
+  "users": [
+    {
+      "id": 1,
+      "firstName": "Terry",
+      "lastName": "Medhurst",
+      "maidenName": "Smitham",
+      "age": 50,
+      "gender": "male",
+      "email": "atowsand0@bing.com",
+      "phone": "+63 791 675 8914",
+      "username": "atowsand0",
+      "password": "password",
+      "birthDate": "2000-12-25",
+      "image": "https://robohash.org/hicvelres.png",
+      "bloodGroup": "A+",
+      "height": 189,
+      "weight": 75.4,
+      "eyeColor": "Green",
+      "hair": {
+        "color": "Black",
+        "type": "Strands"
+      },
+      "domain": "google.com",
+      "ip": "21.179.162.2",
+      "address": {
+        "address": "1745 T Street NW",
+        "city": "Washington",
+        "coordinates": {
+          "lat": 38.9072,
+          "lng": -77.0369
+        },
+        "postalCode": "20009",
+        "state": "DC"
+      },
+      "macAddress": "01:23:45:67:89:AB",
+      "university": "Capitol University",
+      "bank": {
+        "cardExpire": "05/26",
+        "cardNumber": "1234567890123456",
+        "cardType": "MasterCard",
+        "currency": "USD",
+        "iban": "US12345678901234567890"
+      },
+      "company": {
+        "address": {
+          "address": "123 Main St",
+          "city": "New York",
+          "coordinates": {
+            "lat": 40.7128,
+            "lng": -74.0060
+          },
+          "postalCode": "10001",
+          "state": "NY"
+        },
+        "department": "Engineering",
+        "name": "Tech Corp",
+        "title": "Software Engineer"
+      },
+      "ein": "12-3456789",
+      "ssn": "123-456-7890",
+      "userAgent": "Mozilla/5.0",
+      "crypto": {
+        "coin": "Bitcoin",
+        "wallet": "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa",
+        "network": "Ethereum"
       }
-    },
-    "phone": "1-770-736-8031 x56442",
-    "website": "hildegard.org",
-    "company": {
-      "name": "Romaguera-Crona",
-      "catchPhrase": "Multi-layered client-server neural-net",
-      "bs": "harness real-time e-markets"
     }
-  },
-  {
-    "id": 2,
-    "name": "Ervin Howell",
-    "username": "Antonette",
-    "email": "Shanna@melissa.tv",
-    "address": {
-      "street": "Victor Plains",
-      "suite": "Suite 879",
-      "city": "Wisokyburgh",
-      "zipcode": "90566-7771",
-      "geo": {
-        "lat": "-43.9509",
-        "lng": "-34.4618"
-      }
-    },
-    "phone": "010-692-6593 x09125",
-    "website": "anastasia.net",
-    "company": {
-      "name": "Deckow-Crist",
-      "catchPhrase": "Proactive didactic contingency",
-      "bs": "synergize scalable supply-chains"
-    }
-  }]
+  ]
+}
 ''',
         );
         when(() => httpClient.get(any())).thenAnswer((_) async => response);
@@ -121,7 +144,7 @@ void main() {
           actual[0],
           isA<User>()
               .having((l) => l.id, 'id', 1)
-              .having((l) => l.username, 'username', 'Bret'),
+              .having((l) => l.username, 'username', 'atowsand0'),
         );
       });
     });
@@ -129,9 +152,10 @@ void main() {
     group('addPost', () {
       test('makes correct http request', () async {
         final response = MockResponse();
-        when(() => response.statusCode).thenReturn(200);
+        when(() => response.statusCode).thenReturn(201);
         when(() => response.body).thenReturn('{}');
-        when(() => httpClient.post(any(), body: ''))
+        when(() => httpClient.post(any(),
+                body: any(named: 'body'), headers: any(named: 'headers')))
             .thenAnswer((_) async => response);
         try {
           await apiClient.addPost(Post());
@@ -139,44 +163,40 @@ void main() {
         verify(
           () => httpClient.post(
             Uri.https(
-              'jsonplaceholder.typicode.com',
-              '/posts',
+              'dummyjson.com',
+              '/posts/add',
             ),
             body: jsonEncode(Post()),
+            headers: {'Content-Type': 'application/json'},
           ),
         ).called(1);
       });
 
-      test('throws AddPostRequestFailure on non-201 response', () async {
+      test('throws Exception on non-201 response', () async {
         final response = MockResponse();
         when(() => response.statusCode).thenReturn(400);
         when(
           () => httpClient.post(
             any(),
-            body: jsonEncode(
-              Post(),
-            ),
+            body: any(named: 'body'),
+            headers: any(named: 'headers'),
           ),
         ).thenAnswer((_) async => response);
         expect(
           () async => apiClient.addPost(Post()),
-          throwsA(isA<AddPostRequestFailure>()),
+          throwsA(isA<Exception>()),
         );
       });
 
       test('returns nothing on valid response', () async {
         final response = MockResponse();
         when(() => response.statusCode).thenReturn(201);
-        when(() => response.body).thenReturn(
-          '''
-''',
-        );
+        when(() => response.body).thenReturn('{}');
         when(
           () => httpClient.post(
             any(),
-            body: jsonEncode(
-              Post(),
-            ),
+            body: any(named: 'body'),
+            headers: any(named: 'headers'),
           ),
         ).thenAnswer((_) async => response);
         bool err = false;
