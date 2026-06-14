@@ -1,8 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_sample_app/features/login/auth.dart';
-import 'package:flutter_sample_app/main.dart';
-import 'package:flutter_sample_app/util/connection_util.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 part 'login_state.dart';
