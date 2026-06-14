@@ -19,11 +19,11 @@ UserListState _$UserListStateFromJson(Map<String, dynamic> json) =>
           'users',
           (v) =>
               (v as List<dynamic>?)
-                  ?.map((e) => User.fromJson(e as Map<String, dynamic>))
+                  ?.map((e) => UserEntity.fromJson(e as Map<String, dynamic>))
                   .toList() ??
               const [],
         ),
-        message: $checkedConvert('message', (v) => v as String? ?? ''),
+        message: $checkedConvert('message', (v) => v as String?),
       );
       return val;
     });

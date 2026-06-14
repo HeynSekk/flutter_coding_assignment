@@ -39,7 +39,7 @@ void main() {
         } catch (_) {}
         verify(
           () => remoteApiClient.addPost(
-            remote.Post(userId: 2),
+            remote.PostModel(userId: 2),
           ),
         ).called(1);
       });
@@ -47,15 +47,15 @@ void main() {
 
     group('getUsers', () {
       test(
-          'get the result of api client and transform remote.User to current.User object',
+          'get the result of api client and transform remote.UserResponse to UserEntity object',
           () async {
         when(
           () => remoteApiClient.fetchUsers(),
-        ).thenAnswer((_) async => [remote.User(name: 'John')]);
-        List<User> users = await userRepository.getUsers();
+        ).thenAnswer((_) async => [remote.UserResponse(name: 'John')]);
+        List<UserEntity> users = await userRepository.getUsers();
         expect(
           users[0],
-          isA<User>().having((l) => l.name, 'name', 'John'),
+          isA<UserEntity>().having((l) => l.name, 'name', 'John'),
         );
       });
     });

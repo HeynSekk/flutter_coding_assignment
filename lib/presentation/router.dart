@@ -8,9 +8,7 @@ import 'package:flutter_sample_app/features/users_list/users_list_view.dart';
 import 'package:flutter_sample_app/main.dart';
 import 'package:flutter_sample_app/util/json_generator.dart';
 import 'package:go_router/go_router.dart';
-import 'package:user_repository/user_repository.dart' hide User;
-
-import '../models/user.dart';
+import 'package:user_repository/user_repository.dart';
 
 final router = GoRouter(
   initialLocation: '/',
@@ -41,7 +39,7 @@ final router = GoRouter(
       name: 'user-detail',
       path: '/user-detail',
       builder: (context, state) {
-        User user = state.extra as User;
+        UserEntity user = state.extra as UserEntity;
         return UserDetailPage(user: user);
       },
     ),

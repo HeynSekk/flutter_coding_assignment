@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_sample_app/features/user_detail/user_detail_view.dart';
-import 'package:flutter_sample_app/models/user.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:user_repository/user_repository.dart';
 
 void main() {
-  final user = User(id: 1, name: 'user 1', username: 'user1_nick', website: 'user1.com');
+  final user = UserEntity(id: 1, name: 'user 1', username: 'user1_nick', website: 'user1.com');
   group('UserInfoCard', () {
     //Must show user data correctly
     testWidgets('Must show user data correctly', (tester) async {
@@ -26,7 +26,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: UserDetailPage(
-            user: User(id: 1),
+            user: UserEntity(id: 1),
           ),
         ),
       );

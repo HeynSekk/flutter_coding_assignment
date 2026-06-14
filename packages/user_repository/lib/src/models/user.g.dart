@@ -6,12 +6,11 @@ part of 'user.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserResponse _$UserResponseFromJson(Map<String, dynamic> json) =>
-    $checkedCreate(
-      'UserResponse',
+UserEntity _$UserEntityFromJson(Map<String, dynamic> json) => $checkedCreate(
+      'UserEntity',
       json,
       ($checkedConvert) {
-        final val = UserResponse(
+        final val = UserEntity(
           id: $checkedConvert('id', (v) => (v as num?)?.toInt()),
           name: $checkedConvert('name', (v) => v as String?),
           username: $checkedConvert('username', (v) => v as String?),
@@ -20,20 +19,20 @@ UserResponse _$UserResponseFromJson(Map<String, dynamic> json) =>
               'address',
               (v) => v == null
                   ? null
-                  : AddressResponse.fromJson(v as Map<String, dynamic>)),
+                  : AddressEntity.fromJson(v as Map<String, dynamic>)),
           phone: $checkedConvert('phone', (v) => v as String?),
           website: $checkedConvert('website', (v) => v as String?),
           company: $checkedConvert(
               'company',
               (v) => v == null
                   ? null
-                  : CompanyResponse.fromJson(v as Map<String, dynamic>)),
+                  : CompanyEntity.fromJson(v as Map<String, dynamic>)),
         );
         return val;
       },
     );
 
-Map<String, dynamic> _$UserResponseToJson(UserResponse instance) =>
+Map<String, dynamic> _$UserEntityToJson(UserEntity instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
@@ -45,12 +44,12 @@ Map<String, dynamic> _$UserResponseToJson(UserResponse instance) =>
       'company': instance.company?.toJson(),
     };
 
-AddressResponse _$AddressResponseFromJson(Map<String, dynamic> json) =>
+AddressEntity _$AddressEntityFromJson(Map<String, dynamic> json) =>
     $checkedCreate(
-      'AddressResponse',
+      'AddressEntity',
       json,
       ($checkedConvert) {
-        final val = AddressResponse(
+        final val = AddressEntity(
           street: $checkedConvert('street', (v) => v as String?),
           suite: $checkedConvert('suite', (v) => v as String?),
           city: $checkedConvert('city', (v) => v as String?),
@@ -59,13 +58,13 @@ AddressResponse _$AddressResponseFromJson(Map<String, dynamic> json) =>
               'geo',
               (v) => v == null
                   ? null
-                  : GeoResponse.fromJson(v as Map<String, dynamic>)),
+                  : GeoEntity.fromJson(v as Map<String, dynamic>)),
         );
         return val;
       },
     );
 
-Map<String, dynamic> _$AddressResponseToJson(AddressResponse instance) =>
+Map<String, dynamic> _$AddressEntityToJson(AddressEntity instance) =>
     <String, dynamic>{
       'street': instance.street,
       'suite': instance.suite,
@@ -74,11 +73,11 @@ Map<String, dynamic> _$AddressResponseToJson(AddressResponse instance) =>
       'geo': instance.geo?.toJson(),
     };
 
-GeoResponse _$GeoResponseFromJson(Map<String, dynamic> json) => $checkedCreate(
-      'GeoResponse',
+GeoEntity _$GeoEntityFromJson(Map<String, dynamic> json) => $checkedCreate(
+      'GeoEntity',
       json,
       ($checkedConvert) {
-        final val = GeoResponse(
+        final val = GeoEntity(
           lat: $checkedConvert('lat', (v) => v as String?),
           lng: $checkedConvert('lng', (v) => v as String?),
         );
@@ -86,29 +85,29 @@ GeoResponse _$GeoResponseFromJson(Map<String, dynamic> json) => $checkedCreate(
       },
     );
 
-Map<String, dynamic> _$GeoResponseToJson(GeoResponse instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$GeoEntityToJson(GeoEntity instance) => <String, dynamic>{
       'lat': instance.lat,
       'lng': instance.lng,
     };
 
-CompanyResponse _$CompanyResponseFromJson(Map<String, dynamic> json) =>
+CompanyEntity _$CompanyEntityFromJson(Map<String, dynamic> json) =>
     $checkedCreate(
-      'CompanyResponse',
+      'CompanyEntity',
       json,
       ($checkedConvert) {
-        final val = CompanyResponse(
+        final val = CompanyEntity(
           name: $checkedConvert('name', (v) => v as String?),
-          catchPhrase: $checkedConvert('catchPhrase', (v) => v as String?),
+          catchPhrase: $checkedConvert('catch_phrase', (v) => v as String?),
           bs: $checkedConvert('bs', (v) => v as String?),
         );
         return val;
       },
+      fieldKeyMap: const {'catchPhrase': 'catch_phrase'},
     );
 
-Map<String, dynamic> _$CompanyResponseToJson(CompanyResponse instance) =>
+Map<String, dynamic> _$CompanyEntityToJson(CompanyEntity instance) =>
     <String, dynamic>{
       'name': instance.name,
-      'catchPhrase': instance.catchPhrase,
+      'catch_phrase': instance.catchPhrase,
       'bs': instance.bs,
     };

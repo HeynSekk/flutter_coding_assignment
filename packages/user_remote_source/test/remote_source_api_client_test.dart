@@ -142,7 +142,7 @@ void main() {
         final actual = await apiClient.fetchUsers();
         expect(
           actual[0],
-          isA<User>()
+          isA<UserResponse>()
               .having((l) => l.id, 'id', 1)
               .having((l) => l.username, 'username', 'atowsand0'),
         );
@@ -155,10 +155,10 @@ void main() {
         when(() => response.statusCode).thenReturn(201);
         when(() => response.body).thenReturn('{}');
         when(() => httpClient.post(any(),
-                body: any(named: 'body'), headers: any(named: 'headers')))
-            .thenAnswer((_) async => response);
+            body: any(named: 'body'),
+            headers: any(named: 'headers'))).thenAnswer((_) async => response);
         try {
-          await apiClient.addPost(Post());
+          await apiClient.addPost(PostModel());
         } catch (_) {}
         verify(
           () => httpClient.post(
@@ -166,7 +166,7 @@ void main() {
               'dummyjson.com',
               '/posts/add',
             ),
-            body: jsonEncode(Post()),
+            body: jsonEncode(PostModel()),
             headers: {'Content-Type': 'application/json'},
           ),
         ).called(1);
@@ -183,7 +183,7 @@ void main() {
           ),
         ).thenAnswer((_) async => response);
         expect(
-          () async => apiClient.addPost(Post()),
+          () async => apiClient.addPost(PostModel()),
           throwsA(isA<Exception>()),
         );
       });
@@ -201,7 +201,7 @@ void main() {
         ).thenAnswer((_) async => response);
         bool err = false;
         try {
-          await apiClient.addPost(Post());
+          await apiClient.addPost(PostModel());
         } catch (_) {
           err = true;
         }

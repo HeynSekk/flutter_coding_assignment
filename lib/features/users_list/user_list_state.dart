@@ -15,16 +15,16 @@ final class UserListState extends Equatable {
   const UserListState({
     this.status = UserListStatus.initial,
     this.users = const [],
-    this.message = '',
+    this.message,
   });
 
   final UserListStatus status;
-  final List<User> users;
-  final String message;
+  final List<UserEntity> users;
+  final String? message;
 
   UserListState copyWith({
     required UserListStatus status,
-    List<User>? users,
+    List<UserEntity>? users,
     String? message,
   }) {
     return UserListState(

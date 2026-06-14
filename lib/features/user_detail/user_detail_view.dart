@@ -1,28 +1,26 @@
 import 'package:flutter/material.dart';
-
-import '../../models/user.dart';
+import 'package:user_repository/user_repository.dart';
 
 class UserDetailPage extends StatelessWidget {
   const UserDetailPage({super.key, required this.user});
 
-  final User user;
+  final UserEntity user;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('User Details')),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //user id
             InfoWidget(title: 'ID', description: user.id.toString()),
             const SizedBox(height: 16),
-            //name
+            //user name
             InfoWidget(
-              title: 'Name',
+              title: 'User Name',
               description: user.username ?? '<No name>',
             ),
             const SizedBox(height: 16),
@@ -31,7 +29,6 @@ class UserDetailPage extends StatelessWidget {
               title: 'Website',
               description: user.website ?? '<No website>',
             ),
-            const SizedBox(height: 16),
           ],
         ),
       ),

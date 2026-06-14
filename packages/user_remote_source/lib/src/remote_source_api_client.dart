@@ -24,8 +24,8 @@ class RemoteSourceApiClient {
 
   final http.Client _httpClient;
 
-  /// Fetch users [User] `/users`.
-  Future<List<User>> fetchUsers() async {
+  /// Fetch users [UserResponse] `/users`.
+  Future<List<UserResponse>> fetchUsers() async {
     try {
       final userRequest = Uri.https(
         _baseUrl,
@@ -44,16 +44,16 @@ class RemoteSourceApiClient {
       final usersJson = jsonDecode(userResponse.body);
 
       return (usersJson["users"] as List<dynamic>)
-          .map((e) => User.fromJson(e as Map<String, dynamic>))
+          .map((e) => UserResponse.fromJson(e as Map<String, dynamic>))
           .toList();
     } on Exception catch (e) {
       throw ExceptionHandler.refineException(e);
     }
   }
 
-  /// Add a new post [Post] `/post`. `id` field of `Post` is not required in
+  /// Add a new post [PostModel] `/post`. `id` field of `Post` is not required in
   /// the input.
-  Future<void> addPost(Post post) async {
+  Future<void> addPost(PostModel post) async {
     try {
       final uri = Uri.https(
         _baseUrl,

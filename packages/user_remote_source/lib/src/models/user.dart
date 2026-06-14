@@ -3,17 +3,17 @@ import 'package:json_annotation/json_annotation.dart';
 part 'user.g.dart';
 
 @JsonSerializable()
-class User {
+class UserResponse {
   final int? id;
   final String? name;
   final String? username;
   final String? email;
-  final Address? address;
+  final AddressResponse? address;
   final String? phone;
   final String? website;
-  final Company? company;
+  final CompanyResponse? company;
 
-  const User({
+  const UserResponse({
     this.id,
     this.name,
     this.username,
@@ -24,19 +24,19 @@ class User {
     this.company,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
-  Map<String, dynamic> toJson() => _$UserToJson(this);
+  factory UserResponse.fromJson(Map<String, dynamic> json) => _$UserResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$UserResponseToJson(this);
 }
 
 @JsonSerializable()
-class Address {
+class AddressResponse {
   final String? street;
   final String? suite;
   final String? city;
   final String? zipcode;
-  final Geo? geo;
+  final GeoResponse? geo;
 
-  const Address({
+  const AddressResponse({
     this.street,
     this.suite,
     this.city,
@@ -44,38 +44,38 @@ class Address {
     this.geo,
   });
 
-  factory Address.fromJson(Map<String, dynamic> json) =>
-      _$AddressFromJson(json);
-  Map<String, dynamic> toJson() => _$AddressToJson(this);
+  factory AddressResponse.fromJson(Map<String, dynamic> json) =>
+      _$AddressResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$AddressResponseToJson(this);
 }
 
 @JsonSerializable()
-class Geo {
+class GeoResponse {
   final String? lat;
   final String? lng;
 
-  const Geo({
+  const GeoResponse({
     this.lat,
     this.lng,
   });
 
-  factory Geo.fromJson(Map<String, dynamic> json) => _$GeoFromJson(json);
-  Map<String, dynamic> toJson() => _$GeoToJson(this);
+  factory GeoResponse.fromJson(Map<String, dynamic> json) => _$GeoResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$GeoResponseToJson(this);
 }
 
 @JsonSerializable()
-class Company {
+class CompanyResponse {
   final String? name;
   final String? catchPhrase;
   final String? bs;
 
-  const Company({
+  const CompanyResponse({
     this.name,
     this.catchPhrase,
     this.bs,
   });
 
-  factory Company.fromJson(Map<String, dynamic> json) =>
-      _$CompanyFromJson(json);
-  Map<String, dynamic> toJson() => _$CompanyToJson(this);
+  factory CompanyResponse.fromJson(Map<String, dynamic> json) =>
+      _$CompanyResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$CompanyResponseToJson(this);
 }

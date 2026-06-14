@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:simple_file_saver/simple_file_saver.dart';
-import '../models/user.dart';
+import 'package:user_repository/user_repository.dart';
 import 'dart:typed_data';
 
 class FileSaverWrapper {
@@ -22,7 +22,7 @@ class JsonGenerator {
   /// Returns an exception if something went wrong. We can handle different
   /// failure cases here. But for simplicity, we will just return
   /// the exception and handle it in the cubit.
-  Future<void> generateJson(List<User> users) async {
+  Future<void> generateJson(List<UserEntity> users) async {
     try {
       final List<Map<String, dynamic>> usersMap = users
           .map((e) => e.toJson())

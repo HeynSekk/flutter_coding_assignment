@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:user_remote_source/user_remote_source.dart';
 
 class Post extends Equatable {
   final int? userId;
@@ -12,6 +13,13 @@ class Post extends Equatable {
     this.title,
     this.body,
   });
+
+  PostModel toModel() => PostModel(
+        userId: userId,
+        id: id,
+        title: title,
+        body: body,
+      );
 
   @override
   List<Object?> get props => [userId, id, title, body];

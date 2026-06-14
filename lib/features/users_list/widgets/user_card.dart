@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
-import '../../../models/user.dart';
+import 'package:user_repository/user_repository.dart';
 
 class UserInfoCard extends StatelessWidget {
-  final User user;
+  final UserEntity user;
 
   const UserInfoCard({
     super.key,

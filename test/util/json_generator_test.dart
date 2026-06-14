@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:flutter_sample_app/models/user.dart';
 import 'package:flutter_sample_app/util/json_generator.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:simple_file_saver/simple_file_saver.dart';
+import 'package:user_repository/user_repository.dart';
 
 class MockFileSaverWrapper extends Mock implements FileSaverWrapper {}
 
@@ -27,8 +27,8 @@ void main() {
     test('generateJson calls saveFile with correctly encoded JSON', () async {
       // arrange
       final users = [
-        const User(id: 1, username: 'user1', email: 'user1@example.com'),
-        const User(id: 2, username: 'user2', email: 'user2@example.com'),
+        const UserEntity(id: 1, username: 'user1', email: 'user1@example.com'),
+        const UserEntity(id: 2, username: 'user2', email: 'user2@example.com'),
       ];
 
       final expectedJson = jsonEncode(users.map((e) => e.toJson()).toList());
@@ -61,7 +61,7 @@ void main() {
 
     test('generateJson throws custom exception when saveFile fails', () async {
       // arrange
-      final users = [const User(id: 1)];
+      final users = [const UserEntity(id: 1)];
       when(
         () => mockFileSaver.saveFile(
           fileInfo: any(named: 'fileInfo'),

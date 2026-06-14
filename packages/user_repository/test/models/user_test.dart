@@ -1,60 +1,59 @@
-import 'package:flutter_sample_app/models/user.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:user_repository/user_repository.dart' as repo;
+import 'package:test/test.dart';
+import 'package:user_remote_source/user_remote_source.dart';
+import 'package:user_repository/user_repository.dart';
 
 void main() {
-  group('user', () {
-    test('transform repo User to current package User object correctly',
-        () async {
-      const repo.User repoUser = repo.User(
+  group('User Mapping', () {
+    test('transform UserResponse to UserEntity object correctly', () {
+      const userResponse = UserResponse(
         id: 1,
         name: 'user.name',
         username: 'user.username',
         email: 'user.email',
-        address: repo.Address(
+        address: AddressResponse(
           street: 'user.address?.street',
           suite: 'user.address?.suite',
           city: 'user.address?.city',
           zipcode: 'user.address?.zipcode',
-          geo: repo.Geo(
+          geo: GeoResponse(
             lat: 'user.address?.geo?.lat',
             lng: 'user.address?.geo?.lng',
           ),
         ),
         phone: 'user.phone',
         website: 'user.website',
-        company: repo.Company(
+        company: CompanyResponse(
           name: 'user.company?.name',
           catchPhrase: 'user.company?.catchPhrase',
           bs: 'user.company?.bs',
         ),
       );
-      const User user = User(
+      const userEntity = UserEntity(
         id: 1,
         name: 'user.name',
         username: 'user.username',
         email: 'user.email',
-        address: Address(
+        address: AddressEntity(
           street: 'user.address?.street',
           suite: 'user.address?.suite',
           city: 'user.address?.city',
           zipcode: 'user.address?.zipcode',
-          geo: Geo(
+          geo: GeoEntity(
             lat: 'user.address?.geo?.lat',
             lng: 'user.address?.geo?.lng',
           ),
         ),
         phone: 'user.phone',
         website: 'user.website',
-        company: Company(
+        company: CompanyEntity(
           name: 'user.company?.name',
           catchPhrase: 'user.company?.catchPhrase',
           bs: 'user.company?.bs',
         ),
       );
       expect(
-        User.fromRepo(repoUser),
-        user,
+        userResponse.toEntity(),
+        userEntity,
       );
     });
   });

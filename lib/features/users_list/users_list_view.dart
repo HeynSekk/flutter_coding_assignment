@@ -96,9 +96,9 @@ class _UserListViewState extends State<UserListView> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      state.message == ''
+                      (state.message == null || state.message == '')
                           ? 'Cannot fetch users'
-                          : state.message,
+                          : state.message!,
                     ),
                     const SizedBox(height: 16),
                     ElevatedButton(
@@ -169,9 +169,9 @@ class JsonGenerationStatus extends StatelessWidget {
 
   String _getMessage(UserListState userListState) {
     if (userListState.status == UserListStatus.jsonGenerateFailure) {
-      return userListState.message == ''
+      return (userListState.message == null || userListState.message == '')
           ? 'Failed to generate JSON file'
-          : userListState.message;
+          : userListState.message!;
     }
     if (userListState.status == UserListStatus.jsonGenerateSuccess) {
       return "Json Generation Succeeded!";
