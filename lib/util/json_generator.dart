@@ -1,11 +1,23 @@
 import 'dart:convert';
-
 import 'package:simple_file_saver/simple_file_saver.dart';
-
 import '../models/user.dart';
+import 'dart:typed_data';
 
-//TODO add tests
+class FileSaverWrapper {
+  Future<String?> saveFile({
+    required FileSaveInfo fileInfo,
+    bool saveAs = false,
+  }) {
+    return SimpleFileSaver.saveFile(fileInfo: fileInfo, saveAs: saveAs);
+  }
+}
+
 class JsonGenerator {
+  final FileSaverWrapper _fileSaver;
+
+  JsonGenerator({FileSaverWrapper? fileSaver})
+    : _fileSaver = fileSaver ?? FileSaverWrapper();
+
   /// Generate a json ans save it.
   /// Returns an exception if something went wrong. We can handle different
   /// failure cases here. But for simplicity, we will just return
@@ -16,9 +28,9 @@ class JsonGenerator {
           .map((e) => e.toJson())
           .toList();
       final String usersStr = jsonEncode(usersMap);
-      await SimpleFileSaver.saveFile(
+      await _fileSaver.saveFile(
         fileInfo: FileSaveInfo.fromBytes(
-          bytes: utf8.encode(usersStr),
+          bytes: Uint8List.fromList(utf8.encode(usersStr)),
           basename: 'file_save',
           extension: 'txt',
         ),
