@@ -62,9 +62,3 @@ This is a Flutter-based application demonstrating MVVM architecture, Clean Archi
 - `lib/features/`: Feature-based modular structure (login, users_list, user_detail, add_post).
 - `packages/`: Contains internal library packages for repository and remote source.
 
-## Known Limitations & TODOs
-- Add form validation in Login and Add Post pages.
-- Implement proper logging.
-- Improve error handling and real-time Firebase auth state responses.
-- Fix "Save to Downloads" functionality.
-- Refactor model class usage in Repository and API classes.

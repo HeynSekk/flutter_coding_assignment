@@ -66,11 +66,10 @@ https://stackoverflow.com/questions/50789578/how-can-the-code-coverage-data-from
 
 ## Known issues
 - need to refactor model class usage in repo and api classes.
-- save to downloads folder is not working.
 
 ## Notes
 - If cannot test the app, please kindly use VPN.
-- Most components has automated tests written. (90.3% line coverage right now) And some components do not have tests.
+- Most components has automated tests written. But some do not have tests.
 
 
 
